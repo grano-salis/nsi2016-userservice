@@ -11,8 +11,9 @@ namespace SSO.WCFService.Contracts
     interface IAccountManagement
     {
         //these operations are authorized and only user with ADMIN role can execute them
+        //TODO change inputs - make DATA contracts instead
         [OperationContract]
-        Boolean AddRole(string roleId, string userId); //add new role to a user, TODO: change input and output parameters
+        Boolean AddRole(string roleId, string userId); //add new role to a user, TODO: change input and output parameters 
 
         [OperationContract]
         Boolean RemoveRole(string roleId, string userId); //remove role from a user, TODO: change input and output parameters
