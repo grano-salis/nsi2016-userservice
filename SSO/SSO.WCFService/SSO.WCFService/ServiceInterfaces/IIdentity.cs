@@ -5,10 +5,10 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SSO.WCFService.Contracts
+namespace SSO.WCFService.ServiceInterfaces
 {
     [ServiceContract]
-    interface IIdentityService
+    interface IIdentity
     {
         [OperationContract]
         Boolean Logout();//Set claim property Valid to false, TODO: change input and output parameters

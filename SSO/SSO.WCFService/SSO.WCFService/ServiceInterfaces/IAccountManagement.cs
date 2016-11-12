@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SSO.WCFService.Contracts
+namespace SSO.WCFService.ServiceInterfaces
 {
     [ServiceContract]
     interface IAccountManagement
