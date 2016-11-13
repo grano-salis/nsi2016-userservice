@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="55d87ab7521345f2b708b2f3bd6f6305" Name="Diagram1">
-        <EntityTypeShape EntityType="SSOModel.CV_CLAIM" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSOModel.CV_MANAGE_ROLES" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSOModel.CV_ROLES" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSOModel.CV_USER" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
-        <AssociationConnector Association="SSOModel.SYS_C00140512" ManuallyRouted="false" />
-        <AssociationConnector Association="SSOModel.SYS_C00140520" ManuallyRouted="false" />
-        <AssociationConnector Association="SSOModel.SYS_C00140521" ManuallyRouted="false" />
+      <Diagram DiagramId="e16964aa70dd45118d59e3dc44e8d971" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.CV_CLAIM" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.CV_MANAGE_ROLES" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.CV_ROLES" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.CV_USER" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="Model.SYS_C00140512" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C00140520" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.SYS_C00140521" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

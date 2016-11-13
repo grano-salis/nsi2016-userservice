@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SSOModel.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CV_CLAIM">
           <Key>
             <PropertyRef Name="ID" />
@@ -78,7 +78,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SSOModelStoreContainer">
+        <Function Name="APP_USER_SECURITY_ADD_USER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="NSI03" StoreFunctionName="APP_USER_SECURITY.ADD_USER">
+          <Parameter Name="P_USERNAME" Type="varchar2" Mode="In" />
+          <Parameter Name="P_PASSWORD" Type="varchar2" Mode="In" />
+          <Parameter Name="P_SALT" Type="varchar2" Mode="In" />
+        </Function>
+        <Function Name="APP_USER_SECURITY_CHANGE_PASSWORD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="NSI03" StoreFunctionName="APP_USER_SECURITY.CHANGE_PASSWORD">
+          <Parameter Name="P_USERNAME" Type="varchar2" Mode="In" />
+          <Parameter Name="P_OLD_PASSWORD" Type="varchar2" Mode="In" />
+          <Parameter Name="P_NEW_PASSWORD" Type="varchar2" Mode="In" />
+        </Function>
+        <Function Name="APP_USER_SECURITY_GET_HASH" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="NSI03" StoreFunctionName="APP_USER_SECURITY.GET_HASH" ReturnType="varchar2">
+          <Parameter Name="P_USERNAME" Type="varchar2" Mode="In" />
+          <Parameter Name="P_PASSWORD" Type="varchar2" Mode="In" />
+        </Function>
+        <Function Name="APP_USER_SECURITY_VALID_USER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="NSI03" StoreFunctionName="APP_USER_SECURITY.VALID_USER">
+          <Parameter Name="P_USERNAME" Type="varchar2" Mode="In" />
+          <Parameter Name="P_PASSWORD" Type="varchar2" Mode="In" />
+        </Function>
+        <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CV_CLAIM" EntityType="Self.CV_CLAIM" Schema="NSI03" store:Type="Tables" />
           <EntitySet Name="CV_MANAGE_ROLES" EntityType="Self.CV_MANAGE_ROLES" Schema="NSI03" store:Type="Tables" />
           <EntitySet Name="CV_ROLES" EntityType="Self.CV_ROLES" Schema="NSI03" store:Type="Tables" />
@@ -96,11 +114,10 @@
             <End Role="CV_MANAGE_ROLES" EntitySet="CV_MANAGE_ROLES" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SSOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="CV_CLAIM">
           <Key>
             <PropertyRef Name="ID" />
@@ -180,7 +197,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SSOEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="nsi03" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CV_CLAIM" EntityType="Self.CV_CLAIM" />
           <EntitySet Name="CV_MANAGE_ROLES" EntityType="Self.CV_MANAGE_ROLES" />
           <EntitySet Name="CV_ROLES" EntityType="Self.CV_ROLES" />
@@ -197,15 +214,20 @@
             <End Role="CV_ROLES" EntitySet="CV_ROLES" />
             <End Role="CV_MANAGE_ROLES" EntitySet="CV_MANAGE_ROLES" />
           </AssociationSet>
+          <FunctionImport Name="AddUser">
+            <Parameter Name="P_USERNAME" Mode="In" Type="String" />
+            <Parameter Name="P_PASSWORD" Mode="In" Type="String" />
+            <Parameter Name="P_SALT" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SSOModelStoreContainer" CdmEntityContainer="SSOEntities">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="nsi03">
           <EntitySetMapping Name="CV_CLAIM">
-            <EntityTypeMapping TypeName="SSOModel.CV_CLAIM">
+            <EntityTypeMapping TypeName="Model.CV_CLAIM">
               <MappingFragment StoreEntitySet="CV_CLAIM">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
@@ -216,7 +238,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_MANAGE_ROLES">
-            <EntityTypeMapping TypeName="SSOModel.CV_MANAGE_ROLES">
+            <EntityTypeMapping TypeName="Model.CV_MANAGE_ROLES">
               <MappingFragment StoreEntitySet="CV_MANAGE_ROLES">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
@@ -225,7 +247,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_ROLES">
-            <EntityTypeMapping TypeName="SSOModel.CV_ROLES">
+            <EntityTypeMapping TypeName="Model.CV_ROLES">
               <MappingFragment StoreEntitySet="CV_ROLES">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
@@ -236,7 +258,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_USER">
-            <EntityTypeMapping TypeName="SSOModel.CV_USER">
+            <EntityTypeMapping TypeName="Model.CV_USER">
               <MappingFragment StoreEntitySet="CV_USER">
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
@@ -245,6 +267,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddUser" FunctionName="Model.Store.APP_USER_SECURITY_ADD_USER" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
