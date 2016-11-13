@@ -16,9 +16,9 @@ namespace SSO.WCFService
     using System.Data.Objects.DataClasses;
     using System.Linq;
     
-    public partial class nsi03 : DbContext
+    public partial class SSOModel : DbContext
     {
-        public nsi03()
+        public SSOModel()
             : base("name=nsi03")
         {
         }
