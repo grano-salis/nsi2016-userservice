@@ -1,7 +1,4 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/SSO/SSO.WCFService/packages/EntityFramework.5.0.0/Content
-/SSO/SSO.WCFService/packages
-/SSO/SSO.WCFService/SSO.WCFService/obj/Debug
+﻿SSO/SSO.WCFService/.vs/SSO.WCFService
+SSO/SSO.WCFService/SSO.WCFService/bin/
+SSO/SSO.WCFService/SSO.WCFService/obj/
+SSO/SSO.WCFService/packages

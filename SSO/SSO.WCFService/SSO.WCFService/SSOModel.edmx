@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SSOModel.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CV_CLAIM">
           <Key>
             <PropertyRef Name="ID" />
@@ -14,6 +14,22 @@
           <Property Name="TOKEN" Type="varchar2" MaxLength="200" Nullable="false" />
           <Property Name="CREATED" Type="date" Nullable="false" />
           <Property Name="VALID" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="CV_FRAGMENT_TYPE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="FRAGMENT_TYPE" Type="varchar2" MaxLength="35" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CV_LOG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="USER_ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="LOG_TEXT" Type="varchar2" MaxLength="200" Nullable="false" />
+          <Property Name="CREATED" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="CV_MANAGE_ROLES">
           <Key>
@@ -29,25 +45,41 @@
           </Key>
           <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
           <Property Name="GROUP_NAME" Type="varchar2" MaxLength="50" Nullable="false" />
-          <Property Name="DELETE_ABILITY" Type="char" MaxLength="1" />
-          <Property Name="EDIT_ABILITY" Type="char" MaxLength="1" />
-          <Property Name="ADD_ABILITY" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CV_USER">
           <Key>
-            <PropertyRef Name="USER_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="USER_ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
           <Property Name="USERNAME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="PASSWORD" Type="char" MaxLength="128" Nullable="false" />
           <Property Name="SALT" Type="char" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CV_USER_INFO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="USER_ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="FIRST_NAME" Type="varchar2" MaxLength="100" />
+          <Property Name="LAST_NAME" Type="varchar2" MaxLength="100" />
+          <Property Name="EMAIL" Type="varchar2" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="CV_XML_FRAGMENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="USER_ID" Type="number" Precision="10" Scale="0" />
+          <Property Name="FRAGMENT_TYPE" Type="number" Precision="10" Scale="0" />
+          <Property Name="XML_DATA" Type="xmltype" Nullable="false" />
         </EntityType>
         <Association Name="SYS_C00140512">
           <End Role="CV_USER" Type="Self.CV_USER" Multiplicity="1" />
           <End Role="CV_CLAIM" Type="Self.CV_CLAIM" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CV_USER">
-              <PropertyRef Name="USER_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="CV_CLAIM">
               <PropertyRef Name="USER_ID" />
@@ -59,7 +91,7 @@
           <End Role="CV_MANAGE_ROLES" Type="Self.CV_MANAGE_ROLES" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CV_USER">
-              <PropertyRef Name="USER_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="CV_MANAGE_ROLES">
               <PropertyRef Name="USER_ID" />
@@ -78,11 +110,81 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SSOModelStoreContainer">
+        <Association Name="SYS_C00140861">
+          <End Role="CV_USER" Type="Self.CV_USER" Multiplicity="1" />
+          <End Role="CV_USER_INFO" Type="Self.CV_USER_INFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CV_USER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CV_USER_INFO">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C00140868">
+          <End Role="CV_USER" Type="Self.CV_USER" Multiplicity="0..1" />
+          <End Role="CV_XML_FRAGMENT" Type="Self.CV_XML_FRAGMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CV_USER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CV_XML_FRAGMENT">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C00140869">
+          <End Role="CV_FRAGMENT_TYPE" Type="Self.CV_FRAGMENT_TYPE" Multiplicity="0..1" />
+          <End Role="CV_XML_FRAGMENT" Type="Self.CV_XML_FRAGMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CV_FRAGMENT_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CV_XML_FRAGMENT">
+              <PropertyRef Name="FRAGMENT_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C00140875">
+          <End Role="CV_USER" Type="Self.CV_USER" Multiplicity="1" />
+          <End Role="CV_LOG" Type="Self.CV_LOG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CV_USER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CV_LOG">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="APP_USER_SECURITY_ADD_USER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="NSI03" StoreFunctionName="APP_USER_SECURITY.ADD_USER">
+          <Parameter Name="P_USERNAME" Type="varchar2" Mode="In" />
+          <Parameter Name="P_PASSWORD" Type="varchar2" Mode="In" />
+          <Parameter Name="P_SALT" Type="varchar2" Mode="In" />
+        </Function>
+        <Function Name="APP_USER_SECURITY_CHANGE_PASSWORD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="NSI03" StoreFunctionName="APP_USER_SECURITY.CHANGE_PASSWORD">
+          <Parameter Name="P_USERNAME" Type="varchar2" Mode="In" />
+          <Parameter Name="P_OLD_PASSWORD" Type="varchar2" Mode="In" />
+          <Parameter Name="P_NEW_PASSWORD" Type="varchar2" Mode="In" />
+        </Function>
+        <Function Name="APP_USER_SECURITY_GET_HASH" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="NSI03" StoreFunctionName="APP_USER_SECURITY.GET_HASH" ReturnType="varchar2">
+          <Parameter Name="P_USERNAME" Type="varchar2" Mode="In" />
+          <Parameter Name="P_PASSWORD" Type="varchar2" Mode="In" />
+        </Function>
+        <Function Name="APP_USER_SECURITY_VALID_USER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="NSI03" StoreFunctionName="APP_USER_SECURITY.VALID_USER">
+          <Parameter Name="P_USERNAME" Type="varchar2" Mode="In" />
+          <Parameter Name="P_PASSWORD" Type="varchar2" Mode="In" />
+        </Function>
+        <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="CV_CLAIM" EntityType="Self.CV_CLAIM" Schema="NSI03" store:Type="Tables" />
+          <EntitySet Name="CV_FRAGMENT_TYPE" EntityType="Self.CV_FRAGMENT_TYPE" Schema="NSI03" store:Type="Tables" />
+          <EntitySet Name="CV_LOG" EntityType="Self.CV_LOG" Schema="NSI03" store:Type="Tables" />
           <EntitySet Name="CV_MANAGE_ROLES" EntityType="Self.CV_MANAGE_ROLES" Schema="NSI03" store:Type="Tables" />
           <EntitySet Name="CV_ROLES" EntityType="Self.CV_ROLES" Schema="NSI03" store:Type="Tables" />
           <EntitySet Name="CV_USER" EntityType="Self.CV_USER" Schema="NSI03" store:Type="Tables" />
+          <EntitySet Name="CV_USER_INFO" EntityType="Self.CV_USER_INFO" Schema="NSI03" store:Type="Tables" />
+          <EntitySet Name="CV_XML_FRAGMENT" EntityType="Self.CV_XML_FRAGMENT" Schema="NSI03" store:Type="Tables" />
           <AssociationSet Name="SYS_C00140512" Association="Self.SYS_C00140512">
             <End Role="CV_USER" EntitySet="CV_USER" />
             <End Role="CV_CLAIM" EntitySet="CV_CLAIM" />
@@ -95,22 +197,98 @@
             <End Role="CV_ROLES" EntitySet="CV_ROLES" />
             <End Role="CV_MANAGE_ROLES" EntitySet="CV_MANAGE_ROLES" />
           </AssociationSet>
+          <AssociationSet Name="SYS_C00140861" Association="Self.SYS_C00140861">
+            <End Role="CV_USER" EntitySet="CV_USER" />
+            <End Role="CV_USER_INFO" EntitySet="CV_USER_INFO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140868" Association="Self.SYS_C00140868">
+            <End Role="CV_USER" EntitySet="CV_USER" />
+            <End Role="CV_XML_FRAGMENT" EntitySet="CV_XML_FRAGMENT" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140869" Association="Self.SYS_C00140869">
+            <End Role="CV_FRAGMENT_TYPE" EntitySet="CV_FRAGMENT_TYPE" />
+            <End Role="CV_XML_FRAGMENT" EntitySet="CV_XML_FRAGMENT" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140875" Association="Self.SYS_C00140875">
+            <End Role="CV_USER" EntitySet="CV_USER" />
+            <End Role="CV_LOG" EntitySet="CV_LOG" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SSOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="nsi03" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="AddUser">
+            <Parameter Name="P_USERNAME" Mode="In" Type="String" />
+            <Parameter Name="P_PASSWORD" Mode="In" Type="String" />
+            <Parameter Name="P_SALT" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="CV_CLAIM" EntityType="Model.CV_CLAIM" />
+          <EntitySet Name="CV_FRAGMENT_TYPE" EntityType="Model.CV_FRAGMENT_TYPE" />
+          <EntitySet Name="CV_LOG" EntityType="Model.CV_LOG" />
+          <EntitySet Name="CV_MANAGE_ROLES" EntityType="Model.CV_MANAGE_ROLES" />
+          <EntitySet Name="CV_ROLES" EntityType="Model.CV_ROLES" />
+          <EntitySet Name="CV_USER" EntityType="Model.CV_USER" />
+          <EntitySet Name="CV_USER_INFO" EntityType="Model.CV_USER_INFO" />
+          <EntitySet Name="CV_XML_FRAGMENT" EntityType="Model.CV_XML_FRAGMENT" />
+          <AssociationSet Name="SYS_C00140512" Association="Model.SYS_C00140512">
+            <End Role="CV_USER" EntitySet="CV_USER" />
+            <End Role="CV_CLAIM" EntitySet="CV_CLAIM" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140869" Association="Model.SYS_C00140869">
+            <End Role="CV_FRAGMENT_TYPE" EntitySet="CV_FRAGMENT_TYPE" />
+            <End Role="CV_XML_FRAGMENT" EntitySet="CV_XML_FRAGMENT" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140875" Association="Model.SYS_C00140875">
+            <End Role="CV_USER" EntitySet="CV_USER" />
+            <End Role="CV_LOG" EntitySet="CV_LOG" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140520" Association="Model.SYS_C00140520">
+            <End Role="CV_USER" EntitySet="CV_USER" />
+            <End Role="CV_MANAGE_ROLES" EntitySet="CV_MANAGE_ROLES" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140521" Association="Model.SYS_C00140521">
+            <End Role="CV_ROLES" EntitySet="CV_ROLES" />
+            <End Role="CV_MANAGE_ROLES" EntitySet="CV_MANAGE_ROLES" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140861" Association="Model.SYS_C00140861">
+            <End Role="CV_USER" EntitySet="CV_USER" />
+            <End Role="CV_USER_INFO" EntitySet="CV_USER_INFO" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C00140868" Association="Model.SYS_C00140868">
+            <End Role="CV_USER" EntitySet="CV_USER" />
+            <End Role="CV_XML_FRAGMENT" EntitySet="CV_XML_FRAGMENT" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="CV_CLAIM">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="USER_ID" Type="Int32" Nullable="false" />
-          <Property Name="TOKEN" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TOKEN" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="CREATED" Type="DateTime" Nullable="false" />
           <Property Name="VALID" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="CV_USER" Relationship="Self.SYS_C00140512" FromRole="CV_CLAIM" ToRole="CV_USER" />
+          <NavigationProperty Name="CV_USER" Relationship="Model.SYS_C00140512" FromRole="CV_CLAIM" ToRole="CV_USER" />
+        </EntityType>
+        <EntityType Name="CV_FRAGMENT_TYPE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="FRAGMENT_TYPE" Type="String" Nullable="false" MaxLength="35" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CV_XML_FRAGMENT" Relationship="Model.SYS_C00140869" FromRole="CV_FRAGMENT_TYPE" ToRole="CV_XML_FRAGMENT" />
+        </EntityType>
+        <EntityType Name="CV_LOG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="USER_ID" Type="Int32" Nullable="false" />
+          <Property Name="LOG_TEXT" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="CV_USER" Relationship="Model.SYS_C00140875" FromRole="CV_LOG" ToRole="CV_USER" />
         </EntityType>
         <EntityType Name="CV_MANAGE_ROLES">
           <Key>
@@ -119,49 +297,95 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="USER_ID" Type="Int32" Nullable="false" />
           <Property Name="ROLE_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CV_USER" Relationship="Self.SYS_C00140520" FromRole="CV_MANAGE_ROLES" ToRole="CV_USER" />
-          <NavigationProperty Name="CV_ROLES" Relationship="Self.SYS_C00140521" FromRole="CV_MANAGE_ROLES" ToRole="CV_ROLES" />
+          <NavigationProperty Name="CV_USER" Relationship="Model.SYS_C00140520" FromRole="CV_MANAGE_ROLES" ToRole="CV_USER" />
+          <NavigationProperty Name="CV_ROLES" Relationship="Model.SYS_C00140521" FromRole="CV_MANAGE_ROLES" ToRole="CV_ROLES" />
         </EntityType>
         <EntityType Name="CV_ROLES">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="GROUP_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DELETE_ABILITY" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="EDIT_ABILITY" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="ADD_ABILITY" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="CV_MANAGE_ROLES" Relationship="Self.SYS_C00140521" FromRole="CV_ROLES" ToRole="CV_MANAGE_ROLES" />
+          <Property Name="GROUP_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CV_MANAGE_ROLES" Relationship="Model.SYS_C00140521" FromRole="CV_ROLES" ToRole="CV_MANAGE_ROLES" />
         </EntityType>
         <EntityType Name="CV_USER">
           <Key>
-            <PropertyRef Name="USER_ID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="USERNAME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PASSWORD" Type="String" Nullable="false" MaxLength="128" FixedLength="true" Unicode="false" />
+          <Property Name="SALT" Type="String" Nullable="false" MaxLength="128" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="CV_CLAIM" Relationship="Model.SYS_C00140512" FromRole="CV_USER" ToRole="CV_CLAIM" />
+          <NavigationProperty Name="CV_LOG" Relationship="Model.SYS_C00140875" FromRole="CV_USER" ToRole="CV_LOG" />
+          <NavigationProperty Name="CV_MANAGE_ROLES" Relationship="Model.SYS_C00140520" FromRole="CV_USER" ToRole="CV_MANAGE_ROLES" />
+          <NavigationProperty Name="CV_USER_INFO" Relationship="Model.SYS_C00140861" FromRole="CV_USER" ToRole="CV_USER_INFO" />
+          <NavigationProperty Name="CV_XML_FRAGMENT" Relationship="Model.SYS_C00140868" FromRole="CV_USER" ToRole="CV_XML_FRAGMENT" />
+        </EntityType>
+        <EntityType Name="CV_USER_INFO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="USER_ID" Type="Int32" Nullable="false" />
-          <Property Name="USERNAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PASSWORD" Type="String" MaxLength="128" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="SALT" Type="String" MaxLength="128" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CV_CLAIM" Relationship="Self.SYS_C00140512" FromRole="CV_USER" ToRole="CV_CLAIM" />
-          <NavigationProperty Name="CV_MANAGE_ROLES" Relationship="Self.SYS_C00140520" FromRole="CV_USER" ToRole="CV_MANAGE_ROLES" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CV_USER" Relationship="Model.SYS_C00140861" FromRole="CV_USER_INFO" ToRole="CV_USER" />
+        </EntityType>
+        <EntityType Name="CV_XML_FRAGMENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="USER_ID" Type="Int32" />
+          <Property Name="FRAGMENT_TYPE" Type="Int32" />
+          <Property Name="XML_DATA" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CV_FRAGMENT_TYPE" Relationship="Model.SYS_C00140869" FromRole="CV_XML_FRAGMENT" ToRole="CV_FRAGMENT_TYPE" />
+          <NavigationProperty Name="CV_USER" Relationship="Model.SYS_C00140868" FromRole="CV_XML_FRAGMENT" ToRole="CV_USER" />
         </EntityType>
         <Association Name="SYS_C00140512">
-          <End Role="CV_USER" Type="Self.CV_USER" Multiplicity="1" />
-          <End Role="CV_CLAIM" Type="Self.CV_CLAIM" Multiplicity="*" />
+          <End Type="Model.CV_USER" Role="CV_USER" Multiplicity="1" />
+          <End Type="Model.CV_CLAIM" Role="CV_CLAIM" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CV_USER">
-              <PropertyRef Name="USER_ID" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="CV_CLAIM">
               <PropertyRef Name="USER_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SYS_C00140520">
-          <End Role="CV_USER" Type="Self.CV_USER" Multiplicity="1" />
-          <End Role="CV_MANAGE_ROLES" Type="Self.CV_MANAGE_ROLES" Multiplicity="*" />
+        <Association Name="SYS_C00140869">
+          <End Type="Model.CV_FRAGMENT_TYPE" Role="CV_FRAGMENT_TYPE" Multiplicity="0..1" />
+          <End Type="Model.CV_XML_FRAGMENT" Role="CV_XML_FRAGMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CV_FRAGMENT_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CV_XML_FRAGMENT">
+              <PropertyRef Name="FRAGMENT_TYPE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C00140875">
+          <End Type="Model.CV_USER" Role="CV_USER" Multiplicity="1" />
+          <End Type="Model.CV_LOG" Role="CV_LOG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CV_USER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CV_LOG">
               <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C00140520">
+          <End Type="Model.CV_USER" Role="CV_USER" Multiplicity="1" />
+          <End Type="Model.CV_MANAGE_ROLES" Role="CV_MANAGE_ROLES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CV_USER">
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="CV_MANAGE_ROLES">
               <PropertyRef Name="USER_ID" />
@@ -169,8 +393,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="SYS_C00140521">
-          <End Role="CV_ROLES" Type="Self.CV_ROLES" Multiplicity="1" />
-          <End Role="CV_MANAGE_ROLES" Type="Self.CV_MANAGE_ROLES" Multiplicity="*" />
+          <End Type="Model.CV_ROLES" Role="CV_ROLES" Multiplicity="1" />
+          <End Type="Model.CV_MANAGE_ROLES" Role="CV_MANAGE_ROLES" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CV_ROLES">
               <PropertyRef Name="ID" />
@@ -180,68 +404,111 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SSOEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CV_CLAIM" EntityType="Self.CV_CLAIM" />
-          <EntitySet Name="CV_MANAGE_ROLES" EntityType="Self.CV_MANAGE_ROLES" />
-          <EntitySet Name="CV_ROLES" EntityType="Self.CV_ROLES" />
-          <EntitySet Name="CV_USER" EntityType="Self.CV_USER" />
-          <AssociationSet Name="SYS_C00140512" Association="Self.SYS_C00140512">
-            <End Role="CV_USER" EntitySet="CV_USER" />
-            <End Role="CV_CLAIM" EntitySet="CV_CLAIM" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_C00140520" Association="Self.SYS_C00140520">
-            <End Role="CV_USER" EntitySet="CV_USER" />
-            <End Role="CV_MANAGE_ROLES" EntitySet="CV_MANAGE_ROLES" />
-          </AssociationSet>
-          <AssociationSet Name="SYS_C00140521" Association="Self.SYS_C00140521">
-            <End Role="CV_ROLES" EntitySet="CV_ROLES" />
-            <End Role="CV_MANAGE_ROLES" EntitySet="CV_MANAGE_ROLES" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        <Association Name="SYS_C00140861">
+          <End Type="Model.CV_USER" Role="CV_USER" Multiplicity="1" />
+          <End Type="Model.CV_USER_INFO" Role="CV_USER_INFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CV_USER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CV_USER_INFO">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C00140868">
+          <End Type="Model.CV_USER" Role="CV_USER" Multiplicity="0..1" />
+          <End Type="Model.CV_XML_FRAGMENT" Role="CV_XML_FRAGMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CV_USER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CV_XML_FRAGMENT">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SSOModelStoreContainer" CdmEntityContainer="SSOEntities">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="nsi03">
+          <FunctionImportMapping FunctionImportName="AddUser" FunctionName="Model.Store.APP_USER_SECURITY_ADD_USER" />
           <EntitySetMapping Name="CV_CLAIM">
-            <EntityTypeMapping TypeName="SSOModel.CV_CLAIM">
+            <EntityTypeMapping TypeName="Model.CV_CLAIM">
               <MappingFragment StoreEntitySet="CV_CLAIM">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
-                <ScalarProperty Name="TOKEN" ColumnName="TOKEN" />
-                <ScalarProperty Name="CREATED" ColumnName="CREATED" />
                 <ScalarProperty Name="VALID" ColumnName="VALID" />
+                <ScalarProperty Name="CREATED" ColumnName="CREATED" />
+                <ScalarProperty Name="TOKEN" ColumnName="TOKEN" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CV_FRAGMENT_TYPE">
+            <EntityTypeMapping TypeName="Model.CV_FRAGMENT_TYPE">
+              <MappingFragment StoreEntitySet="CV_FRAGMENT_TYPE">
+                <ScalarProperty Name="FRAGMENT_TYPE" ColumnName="FRAGMENT_TYPE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CV_LOG">
+            <EntityTypeMapping TypeName="Model.CV_LOG">
+              <MappingFragment StoreEntitySet="CV_LOG">
+                <ScalarProperty Name="CREATED" ColumnName="CREATED" />
+                <ScalarProperty Name="LOG_TEXT" ColumnName="LOG_TEXT" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_MANAGE_ROLES">
-            <EntityTypeMapping TypeName="SSOModel.CV_MANAGE_ROLES">
+            <EntityTypeMapping TypeName="Model.CV_MANAGE_ROLES">
               <MappingFragment StoreEntitySet="CV_MANAGE_ROLES">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_ROLES">
-            <EntityTypeMapping TypeName="SSOModel.CV_ROLES">
+            <EntityTypeMapping TypeName="Model.CV_ROLES">
               <MappingFragment StoreEntitySet="CV_ROLES">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
-                <ScalarProperty Name="DELETE_ABILITY" ColumnName="DELETE_ABILITY" />
-                <ScalarProperty Name="EDIT_ABILITY" ColumnName="EDIT_ABILITY" />
-                <ScalarProperty Name="ADD_ABILITY" ColumnName="ADD_ABILITY" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_USER">
-            <EntityTypeMapping TypeName="SSOModel.CV_USER">
+            <EntityTypeMapping TypeName="Model.CV_USER">
               <MappingFragment StoreEntitySet="CV_USER">
-                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
-                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
-                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
                 <ScalarProperty Name="SALT" ColumnName="SALT" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CV_USER_INFO">
+            <EntityTypeMapping TypeName="Model.CV_USER_INFO">
+              <MappingFragment StoreEntitySet="CV_USER_INFO">
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+                <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CV_XML_FRAGMENT">
+            <EntityTypeMapping TypeName="Model.CV_XML_FRAGMENT">
+              <MappingFragment StoreEntitySet="CV_XML_FRAGMENT">
+                <ScalarProperty Name="XML_DATA" ColumnName="XML_DATA" />
+                <ScalarProperty Name="FRAGMENT_TYPE" ColumnName="FRAGMENT_TYPE" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

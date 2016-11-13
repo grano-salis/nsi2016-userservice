@@ -17,15 +17,21 @@ namespace SSO.WCFService
         public CV_USER()
         {
             this.CV_CLAIM = new HashSet<CV_CLAIM>();
+            this.CV_LOG = new HashSet<CV_LOG>();
             this.CV_MANAGE_ROLES = new HashSet<CV_MANAGE_ROLES>();
+            this.CV_USER_INFO = new HashSet<CV_USER_INFO>();
+            this.CV_XML_FRAGMENT = new HashSet<CV_XML_FRAGMENT>();
         }
     
-        public int USER_ID { get; set; }
+        public int ID { get; set; }
         public string USERNAME { get; set; }
         public string PASSWORD { get; set; }
         public string SALT { get; set; }
     
         public virtual ICollection<CV_CLAIM> CV_CLAIM { get; set; }
+        public virtual ICollection<CV_LOG> CV_LOG { get; set; }
         public virtual ICollection<CV_MANAGE_ROLES> CV_MANAGE_ROLES { get; set; }
+        public virtual ICollection<CV_USER_INFO> CV_USER_INFO { get; set; }
+        public virtual ICollection<CV_XML_FRAGMENT> CV_XML_FRAGMENT { get; set; }
     }
 }

@@ -12,11 +12,14 @@ namespace SSO.WCFService
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
     
-    public partial class SSOEntities : DbContext
+    public partial class nsi03 : DbContext
     {
-        public SSOEntities()
-            : base("name=SSOEntities")
+        public nsi03()
+            : base("name=nsi03")
         {
         }
     
@@ -26,8 +29,29 @@ namespace SSO.WCFService
         }
     
         public DbSet<CV_CLAIM> CV_CLAIM { get; set; }
+        public DbSet<CV_FRAGMENT_TYPE> CV_FRAGMENT_TYPE { get; set; }
+        public DbSet<CV_LOG> CV_LOG { get; set; }
         public DbSet<CV_MANAGE_ROLES> CV_MANAGE_ROLES { get; set; }
         public DbSet<CV_ROLES> CV_ROLES { get; set; }
         public DbSet<CV_USER> CV_USER { get; set; }
+        public DbSet<CV_USER_INFO> CV_USER_INFO { get; set; }
+        public DbSet<CV_XML_FRAGMENT> CV_XML_FRAGMENT { get; set; }
+    
+        public virtual int AddUser(string p_USERNAME, string p_PASSWORD, string p_SALT)
+        {
+            var p_USERNAMEParameter = p_USERNAME != null ?
+                new ObjectParameter("P_USERNAME", p_USERNAME) :
+                new ObjectParameter("P_USERNAME", typeof(string));
+    
+            var p_PASSWORDParameter = p_PASSWORD != null ?
+                new ObjectParameter("P_PASSWORD", p_PASSWORD) :
+                new ObjectParameter("P_PASSWORD", typeof(string));
+    
+            var p_SALTParameter = p_SALT != null ?
+                new ObjectParameter("P_SALT", p_SALT) :
+                new ObjectParameter("P_SALT", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddUser", p_USERNAMEParameter, p_PASSWORDParameter, p_SALTParameter);
+        }
     }
 }

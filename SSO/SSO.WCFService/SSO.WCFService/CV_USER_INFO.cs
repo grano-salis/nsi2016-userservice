@@ -12,16 +12,14 @@ namespace SSO.WCFService
     using System;
     using System.Collections.Generic;
     
-    public partial class CV_ROLES
+    public partial class CV_USER_INFO
     {
-        public CV_ROLES()
-        {
-            this.CV_MANAGE_ROLES = new HashSet<CV_MANAGE_ROLES>();
-        }
-    
         public int ID { get; set; }
-        public string GROUP_NAME { get; set; }
+        public int USER_ID { get; set; }
+        public string FIRST_NAME { get; set; }
+        public string LAST_NAME { get; set; }
+        public string EMAIL { get; set; }
     
-        public virtual ICollection<CV_MANAGE_ROLES> CV_MANAGE_ROLES { get; set; }
+        public virtual CV_USER CV_USER { get; set; }
     }
 }
