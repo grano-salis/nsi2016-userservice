@@ -84,6 +84,12 @@
     <Compile Include="CV_CLAIM.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CV_FRAGMENT_TYPE.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CV_LOG.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CV_MANAGE_ROLES.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
@@ -91,6 +97,12 @@
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CV_USER.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CV_USER_INFO.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CV_XML_FRAGMENT.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContracts\LoginRequest.cs" />
