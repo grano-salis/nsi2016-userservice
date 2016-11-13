@@ -12,16 +12,16 @@ namespace SSO.WCFService
     using System;
     using System.Collections.Generic;
     
-    public partial class CV_ROLES
+    public partial class CV_FRAGMENT_TYPE
     {
-        public CV_ROLES()
+        public CV_FRAGMENT_TYPE()
         {
-            this.CV_MANAGE_ROLES = new HashSet<CV_MANAGE_ROLES>();
+            this.CV_XML_FRAGMENT = new HashSet<CV_XML_FRAGMENT>();
         }
     
         public int ID { get; set; }
-        public string GROUP_NAME { get; set; }
+        public string FRAGMENT_TYPE { get; set; }
     
-        public virtual ICollection<CV_MANAGE_ROLES> CV_MANAGE_ROLES { get; set; }
+        public virtual ICollection<CV_XML_FRAGMENT> CV_XML_FRAGMENT { get; set; }
     }
 }

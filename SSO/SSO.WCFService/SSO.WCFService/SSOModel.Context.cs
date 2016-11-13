@@ -16,9 +16,9 @@ namespace SSO.WCFService
     using System.Data.Objects.DataClasses;
     using System.Linq;
     
-    public partial class SSOModel : DbContext
+    public partial class nsi03 : DbContext
     {
-        public SSOModel()
+        public nsi03()
             : base("name=nsi03")
         {
         }
@@ -29,9 +29,13 @@ namespace SSO.WCFService
         }
     
         public DbSet<CV_CLAIM> CV_CLAIM { get; set; }
+        public DbSet<CV_FRAGMENT_TYPE> CV_FRAGMENT_TYPE { get; set; }
+        public DbSet<CV_LOG> CV_LOG { get; set; }
         public DbSet<CV_MANAGE_ROLES> CV_MANAGE_ROLES { get; set; }
         public DbSet<CV_ROLES> CV_ROLES { get; set; }
         public DbSet<CV_USER> CV_USER { get; set; }
+        public DbSet<CV_USER_INFO> CV_USER_INFO { get; set; }
+        public DbSet<CV_XML_FRAGMENT> CV_XML_FRAGMENT { get; set; }
     
         public virtual int AddUser(string p_USERNAME, string p_PASSWORD, string p_SALT)
         {
