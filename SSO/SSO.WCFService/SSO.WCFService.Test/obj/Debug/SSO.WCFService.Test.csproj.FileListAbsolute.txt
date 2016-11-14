@@ -1,0 +1,11 @@
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\bin\Debug\SSO.WCFService.Test.dll.config
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\bin\Debug\SSO.WCFService.Test.dll
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\bin\Debug\SSO.WCFService.Test.pdb
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\bin\Debug\EntityFramework.dll
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\bin\Debug\SSO.WCFService.dll
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\bin\Debug\SSO.WCFService.pdb
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\obj\Debug\SSO.WCFService.Test.csprojResolveAssemblyReference.cache
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\obj\Debug\SSO.WCFService.Test.dll
+E:\Workspaces\NSI\nsi2016-userservice\SSO\SSO.WCFService\SSO.WCFService.Test\obj\Debug\SSO.WCFService.Test.pdb

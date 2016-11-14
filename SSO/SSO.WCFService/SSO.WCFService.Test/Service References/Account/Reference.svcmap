@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d19aab54-ba28-4601-8303-a1eae9b0cc15" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:48202/BusinessLogic/Account.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Account.xsd" MetadataType="Schema" ID="996f1c8e-2dce-4cbc-bcc9-3f1fca7bd249" SourceId="1" SourceUrl="http://localhost:48202/BusinessLogic/Account.svc?xsd=xsd1" />
+    <MetadataFile FileName="Account.disco" MetadataType="Disco" ID="4c7a6ac6-c2b6-4592-b4a5-2f46deb788e2" SourceId="1" SourceUrl="http://localhost:48202/BusinessLogic/Account.svc?disco" />
+    <MetadataFile FileName="Account1.xsd" MetadataType="Schema" ID="1d5c2b8b-7f9a-416b-a0a3-992e0095d9d9" SourceId="1" SourceUrl="http://localhost:48202/BusinessLogic/Account.svc?xsd=xsd0" />
+    <MetadataFile FileName="Account.wsdl" MetadataType="Wsdl" ID="dce7f15d-b70c-4fb5-9b29-f4255c2662ba" SourceId="1" SourceUrl="http://localhost:48202/BusinessLogic/Account.svc?wsdl" />
+    <MetadataFile FileName="Account2.xsd" MetadataType="Schema" ID="b63e2835-bf0d-48ab-809c-5a4d254e21a7" SourceId="1" SourceUrl="http://localhost:48202/BusinessLogic/Account.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
