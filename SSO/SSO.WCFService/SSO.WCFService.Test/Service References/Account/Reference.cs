@@ -16,10 +16,10 @@ namespace SSO.WCFService.Test.Account {
     public interface IAccount {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/Login", ReplyAction="http://tempuri.org/IAccount/LoginResponse")]
-        bool Login(SSO.WCFService.DataContracts.LoginRequest loginModel);
+        string Login(SSO.WCFService.DataContracts.LoginRequest loginModel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/Login", ReplyAction="http://tempuri.org/IAccount/LoginResponse")]
-        System.Threading.Tasks.Task<bool> LoginAsync(SSO.WCFService.DataContracts.LoginRequest loginModel);
+        System.Threading.Tasks.Task<string> LoginAsync(SSO.WCFService.DataContracts.LoginRequest loginModel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/Register", ReplyAction="http://tempuri.org/IAccount/RegisterResponse")]
         bool Register(SSO.WCFService.DataContracts.RegisterRequest registerModel);
@@ -61,11 +61,11 @@ namespace SSO.WCFService.Test.Account {
                 base(binding, remoteAddress) {
         }
         
-        public bool Login(SSO.WCFService.DataContracts.LoginRequest loginModel) {
+        public string Login(SSO.WCFService.DataContracts.LoginRequest loginModel) {
             return base.Channel.Login(loginModel);
         }
         
-        public System.Threading.Tasks.Task<bool> LoginAsync(SSO.WCFService.DataContracts.LoginRequest loginModel) {
+        public System.Threading.Tasks.Task<string> LoginAsync(SSO.WCFService.DataContracts.LoginRequest loginModel) {
             return base.Channel.LoginAsync(loginModel);
         }
         

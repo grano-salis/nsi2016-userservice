@@ -16,7 +16,7 @@ namespace SSO.WCFService
     public partial class SSOContext : DbContext
     {
         public SSOContext()
-            : base("name=nsi03")
+            : base("name=SSOContext")
         {
         }
     

@@ -17,16 +17,65 @@ namespace SSO.WCFService.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public bool Login(DataContracts.LoginRequest loginModel)
+        public string Login(DataContracts.LoginRequest loginModel)
         {
-            throw new NotImplementedException();
+            if(loginModel == null)
+            {
+                throw new ArgumentNullException("Login Model required.");
+            }
+
+            SSOContext _db = new SSOContext();
+            var user = _db.CV_USER.SingleOrDefault(u => u.USERNAME.Equals(loginModel.Username));
+            if(user == null)
+            {
+                throw new Exceptions.WeakPasswordException();
+            }
+
+            byte[] saltB = Convert.FromBase64String(user.SALT);
+
+            byte[] passwordB = System.Text.Encoding.UTF8.GetBytes(loginModel.Password);
+            var hashAlgorithm = new System.Security.Cryptography.SHA256Cng();
+            byte[] passwordHashB = hashAlgorithm.ComputeHash(passwordB.Concat(saltB).ToArray());
+            var passwordHashS = Convert.ToBase64String(passwordHashB);
+
+            // TODO change database password field to nvarchar
+            // 44 is length of
+            if (!passwordHashS.Equals(user.PASSWORD.Substring(0,44)))
+            {
+                throw new Exceptions.WrongCredentialsException();
+            }
+
+            // Succeful login
+            // Make token
+            var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
+            byte[] tokenB = new byte[40];
+            rng.GetBytes(tokenB);
+
+            //Convert to hex
+            String tokenHex = BitConverter.ToString(tokenB).Replace("-", String.Empty);
+            CV_CLAIM claim = new CV_CLAIM();
+            claim.TOKEN = tokenHex;
+            //claim.VALID = '1';
+            claim.CREATED = DateTime.Now;
+            claim.CV_USER = user;
+
+            try
+            {
+                _db.CV_CLAIM.Add(claim);
+                _db.SaveChanges();
+                return tokenHex;
+            }
+            catch (Exception e)
+            {
+                throw new Exceptions.SSOBaseException("Add claim error", e);
+            }
         }
 
         public bool Register(DataContracts.RegisterRequest registerModel)
         {
             if (registerModel == null)
             {
-                throw new ArgumentNullException("Register Model");
+                throw new ArgumentNullException("Register Model required.");
             }
             //TODO check model validation and throw ModelValidatoinException if neede
             if (!checkPassword(registerModel.Password))
@@ -34,18 +83,27 @@ namespace SSO.WCFService.BusinessLogic
                 throw new Exceptions.WeakPasswordException();
             }
 
-            SSOContext _db = new SSOContext();
-            if (_db.CV_USER.SingleOrDefault(u => u.USERNAME.Equals(registerModel.Username)) != null)
+            SSOContext _db;
+            try
             {
-                // User with same username already exists
-                throw new Exceptions.UsernameExistsException(registerModel.Username);
-            }
-            if (_db.CV_USER_INFO.SingleOrDefault(u => u.EMAIL.Equals(registerModel.Email)) != null)
-            {
-                // User with same email already exists
-                throw new Exceptions.EmailExistsException(registerModel.Email);
-            }
+                _db = new SSOContext();
+                if (_db.CV_USER.SingleOrDefault(u => u.USERNAME.Equals(registerModel.Username)) != null)
+                {
+                    // User with same username already exists
+                    throw new Exceptions.UsernameExistsException(registerModel.Username);
+                }
+                if (_db.CV_USER_INFO.SingleOrDefault(u => u.EMAIL.Equals(registerModel.Email)) != null)
+                {
+                    // User with same email already exists
+                    throw new Exceptions.EmailExistsException(registerModel.Email);
+                }
 
+            }
+            catch (Exception e)
+            {
+
+                throw new Exceptions.SSOBaseException("bla", e);
+            }
             // Make salt
             var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
             // Salt should be long at least as hash algorith output. Sha256 output iz 32 bytes long.
@@ -63,7 +121,7 @@ namespace SSO.WCFService.BusinessLogic
             CV_USER newUser = new CV_USER();
             newUser.USERNAME = registerModel.Username;
             newUser.SALT = saltS;
-            newUser.PASSWORD = passwordHashS;
+            newUser.PASSWORD = passwordHashS + '\0';
 
             CV_USER_INFO info = new CV_USER_INFO();
             info.EMAIL = registerModel.Email;
@@ -75,7 +133,10 @@ namespace SSO.WCFService.BusinessLogic
             //Save user
             try
             {
+                Console.WriteLine("prije usera");
                 _db.CV_USER.Add(newUser);
+                Console.WriteLine("poslije usera");
+                _db.SaveChanges();
             }
             catch (Exception e)
             {

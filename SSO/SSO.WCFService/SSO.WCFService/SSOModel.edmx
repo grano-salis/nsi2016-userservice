@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SSOContext.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SSOModel.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CV_CLAIM">
           <Key>
             <PropertyRef Name="ID" />
@@ -158,7 +158,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SSOContextStoreContainer">
+        <EntityContainer Name="SSOModelStoreContainer">
           <EntitySet Name="CV_CLAIM" EntityType="Self.CV_CLAIM" Schema="NSI03" store:Type="Tables" />
           <EntitySet Name="CV_FRAGMENT_TYPE" EntityType="Self.CV_FRAGMENT_TYPE" Schema="NSI03" store:Type="Tables" />
           <EntitySet Name="CV_LOG" EntityType="Self.CV_LOG" Schema="NSI03" store:Type="Tables" />
@@ -196,11 +196,10 @@
             <End Role="CV_LOG" EntitySet="CV_LOG" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SSOContext" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="SSOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="CV_CLAIM">
           <Key>
             <PropertyRef Name="ID" />
@@ -368,7 +367,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SSOContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CV_CLAIM" EntityType="Self.CV_CLAIM" />
           <EntitySet Name="CV_FRAGMENT_TYPE" EntityType="Self.CV_FRAGMENT_TYPE" />
           <EntitySet Name="CV_LOG" EntityType="Self.CV_LOG" />
@@ -411,9 +410,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SSOContextStoreContainer" CdmEntityContainer="Entities">
+        <EntityContainerMapping StorageEntityContainer="SSOModelStoreContainer" CdmEntityContainer="SSOContext">
           <EntitySetMapping Name="CV_CLAIM">
-            <EntityTypeMapping TypeName="SSOContext.CV_CLAIM">
+            <EntityTypeMapping TypeName="SSOModel.CV_CLAIM">
               <MappingFragment StoreEntitySet="CV_CLAIM">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
@@ -424,7 +423,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_FRAGMENT_TYPE">
-            <EntityTypeMapping TypeName="SSOContext.CV_FRAGMENT_TYPE">
+            <EntityTypeMapping TypeName="SSOModel.CV_FRAGMENT_TYPE">
               <MappingFragment StoreEntitySet="CV_FRAGMENT_TYPE">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="FRAGMENT_TYPE" ColumnName="FRAGMENT_TYPE" />
@@ -432,7 +431,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_LOG">
-            <EntityTypeMapping TypeName="SSOContext.CV_LOG">
+            <EntityTypeMapping TypeName="SSOModel.CV_LOG">
               <MappingFragment StoreEntitySet="CV_LOG">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
@@ -442,7 +441,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_MANAGE_ROLES">
-            <EntityTypeMapping TypeName="SSOContext.CV_MANAGE_ROLES">
+            <EntityTypeMapping TypeName="SSOModel.CV_MANAGE_ROLES">
               <MappingFragment StoreEntitySet="CV_MANAGE_ROLES">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
@@ -451,7 +450,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_ROLES">
-            <EntityTypeMapping TypeName="SSOContext.CV_ROLES">
+            <EntityTypeMapping TypeName="SSOModel.CV_ROLES">
               <MappingFragment StoreEntitySet="CV_ROLES">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
@@ -459,7 +458,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_USER">
-            <EntityTypeMapping TypeName="SSOContext.CV_USER">
+            <EntityTypeMapping TypeName="SSOModel.CV_USER">
               <MappingFragment StoreEntitySet="CV_USER">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
@@ -469,7 +468,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_USER_INFO">
-            <EntityTypeMapping TypeName="SSOContext.CV_USER_INFO">
+            <EntityTypeMapping TypeName="SSOModel.CV_USER_INFO">
               <MappingFragment StoreEntitySet="CV_USER_INFO">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
@@ -480,7 +479,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CV_XML_FRAGMENT">
-            <EntityTypeMapping TypeName="SSOContext.CV_XML_FRAGMENT">
+            <EntityTypeMapping TypeName="SSOModel.CV_XML_FRAGMENT">
               <MappingFragment StoreEntitySet="CV_XML_FRAGMENT">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />

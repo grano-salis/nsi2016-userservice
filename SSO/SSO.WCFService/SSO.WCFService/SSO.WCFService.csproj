@@ -126,6 +126,7 @@
     <Compile Include="DataContracts\LoginRequest.cs" />
     <Compile Include="Exceptions\SSOBaseException.cs" />
     <Compile Include="Exceptions\RegistrationExceptions.cs" />
+    <Compile Include="Exceptions\WrongCredentialsException.cs" />
     <Compile Include="ServiceInterfaces\IAccountManagement.cs" />
     <Compile Include="ServiceInterfaces\IAccount.cs" />
     <Compile Include="ServiceInterfaces\IIdentity.cs" />
