@@ -11,12 +11,9 @@ namespace SSO.WCFService
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class UserInfo
     {
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int UserID { get; set; }
         public string FirstName { get; set; }

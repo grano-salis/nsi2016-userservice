@@ -11,8 +11,7 @@ namespace SSO.WCFService
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,7 +23,6 @@ namespace SSO.WCFService
             this.UserInfo = new HashSet<UserInfo>();
         }
     
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
