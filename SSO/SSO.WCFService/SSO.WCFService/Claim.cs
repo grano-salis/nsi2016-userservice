@@ -12,14 +12,14 @@ namespace SSO.WCFService
     using System;
     using System.Collections.Generic;
     
-    public partial class CV_USER_INFO
+    public partial class Claim
     {
         public int ID { get; set; }
-        public int USER_ID { get; set; }
-        public string FIRST_NAME { get; set; }
-        public string LAST_NAME { get; set; }
-        public string EMAIL { get; set; }
+        public int UserID { get; set; }
+        public string Token { get; set; }
+        public System.DateTime Created { get; set; }
+        public string Valid { get; set; }
     
-        public virtual CV_USER CV_USER { get; set; }
+        public virtual User User { get; set; }
     }
 }

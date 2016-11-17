@@ -12,13 +12,13 @@ namespace SSO.WCFService
     using System;
     using System.Collections.Generic;
     
-    public partial class CV_LOG
+    public partial class Log
     {
         public int ID { get; set; }
-        public int USER_ID { get; set; }
-        public string LOG_TEXT { get; set; }
-        public System.DateTime CREATED { get; set; }
+        public int UserID { get; set; }
+        public string LogText { get; set; }
+        public System.DateTime Created { get; set; }
     
-        public virtual CV_USER CV_USER { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -12,14 +12,13 @@ namespace SSO.WCFService
     using System;
     using System.Collections.Generic;
     
-    public partial class CV_XML_FRAGMENT
+    public partial class ManageRole
     {
         public int ID { get; set; }
-        public Nullable<int> USER_ID { get; set; }
-        public Nullable<int> FRAGMENT_TYPE { get; set; }
-        public string XML_DATA { get; set; }
+        public int UserID { get; set; }
+        public int RoleID { get; set; }
     
-        public virtual CV_FRAGMENT_TYPE CV_FRAGMENT_TYPE { get; set; }
-        public virtual CV_USER CV_USER { get; set; }
+        public virtual User User { get; set; }
+        public virtual Roles Role { get; set; }
     }
 }

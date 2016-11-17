@@ -11,14 +11,18 @@ namespace SSO.WCFService
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class CV_MANAGE_ROLES
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    public partial class UserInfo
     {
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public int USER_ID { get; set; }
-        public int ROLE_ID { get; set; }
+        public int UserID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
     
-        public virtual CV_USER CV_USER { get; set; }
-        public virtual CV_ROLES CV_ROLES { get; set; }
+        public virtual User User { get; set; }
     }
 }

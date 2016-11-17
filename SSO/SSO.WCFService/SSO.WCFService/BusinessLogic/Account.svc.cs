@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace SSO.WCFService.BusinessLogic
@@ -13,6 +14,21 @@ namespace SSO.WCFService.BusinessLogic
     {
         public bool ChangePassword()
         {
+            /*try
+            {
+                SSOContext _db = new SSOContext();
+                UserLuka l = new UserLuka();
+                l.NAME = "luka lol";
+
+                _db.UserLukas.Add(l);
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }*/
+           
+
             return true;
             throw new NotImplementedException();
         }
@@ -25,13 +41,13 @@ namespace SSO.WCFService.BusinessLogic
             }
 
             SSOContext _db = new SSOContext();
-            var user = _db.CV_USER.SingleOrDefault(u => u.USERNAME.Equals(loginModel.Username));
+            var user = _db.Users.SingleOrDefault(u => u.Username.Equals(loginModel.Username));
             if(user == null)
             {
                 throw new Exceptions.WeakPasswordException();
             }
 
-            byte[] saltB = Convert.FromBase64String(user.SALT);
+            byte[] saltB = Convert.FromBase64String(user.Salt);
 
             byte[] passwordB = System.Text.Encoding.UTF8.GetBytes(loginModel.Password);
             var hashAlgorithm = new System.Security.Cryptography.SHA256Cng();
@@ -40,7 +56,7 @@ namespace SSO.WCFService.BusinessLogic
 
             // TODO change database password field to nvarchar
             // 44 is length of
-            if (!passwordHashS.Equals(user.PASSWORD.Substring(0,44)))
+            if (!passwordHashS.Equals(user.Password.Substring(0,44)))
             {
                 throw new Exceptions.WrongCredentialsException();
             }
@@ -53,15 +69,15 @@ namespace SSO.WCFService.BusinessLogic
 
             //Convert to hex
             String tokenHex = BitConverter.ToString(tokenB).Replace("-", String.Empty);
-            CV_CLAIM claim = new CV_CLAIM();
-            claim.TOKEN = tokenHex;
+            Claim claim = new Claim();
+            claim.Token = tokenHex;
             //claim.VALID = '1';
-            claim.CREATED = DateTime.Now;
-            claim.CV_USER = user;
+            claim.Created = DateTime.Now;
+            claim.User = user;
 
             try
             {
-                _db.CV_CLAIM.Add(claim);
+                _db.Claims.Add(claim);
                 _db.SaveChanges();
                 return tokenHex;
             }
@@ -71,7 +87,7 @@ namespace SSO.WCFService.BusinessLogic
             }
         }
 
-        public bool Register(DataContracts.RegisterRequest registerModel)
+        public Task<bool> Register(DataContracts.RegisterRequest registerModel)
         {
             if (registerModel == null)
             {
@@ -87,17 +103,25 @@ namespace SSO.WCFService.BusinessLogic
             try
             {
                 _db = new SSOContext();
-                if (_db.CV_USER.SingleOrDefault(u => u.USERNAME.Equals(registerModel.Username)) != null)
+                if (_db.Users.SingleOrDefault(u => u.Username.Equals(registerModel.Username)) != null)
                 {
                     // User with same username already exists
                     throw new Exceptions.UsernameExistsException(registerModel.Username);
                 }
-                if (_db.CV_USER_INFO.SingleOrDefault(u => u.EMAIL.Equals(registerModel.Email)) != null)
+                if (_db.UserInfoes.SingleOrDefault(u => u.Email.Equals(registerModel.Email)) != null)
                 {
                     // User with same email already exists
                     throw new Exceptions.EmailExistsException(registerModel.Email);
                 }
 
+            }
+            catch (Exceptions.UsernameExistsException)
+            {
+                throw;
+            }
+            catch (Exceptions.EmailExistsException)
+            {
+                throw;
             }
             catch (Exception e)
             {
@@ -118,32 +142,33 @@ namespace SSO.WCFService.BusinessLogic
             var passwordHashS = Convert.ToBase64String(passwordHashB);
 
             // Make new user
-            CV_USER newUser = new CV_USER();
-            newUser.USERNAME = registerModel.Username;
-            newUser.SALT = saltS;
-            newUser.PASSWORD = passwordHashS + '\0';
+            User newUser = new User();
+            newUser.Username = registerModel.Username;
+            newUser.Salt = saltS;
+            newUser.Password = passwordHashS;
 
-            CV_USER_INFO info = new CV_USER_INFO();
-            info.EMAIL = registerModel.Email;
-            info.FIRST_NAME = registerModel.FirstName;
-            info.LAST_NAME = registerModel.LastName;
+            UserInfo info = new UserInfo();
+            info.Email = registerModel.Email;
+            info.FirstName = registerModel.FirstName;
+            info.LastName = registerModel.LastName;
 
-            newUser.CV_USER_INFO.Add(info);
+            info.User = newUser;
 
             //Save user
             try
             {
-                Console.WriteLine("prije usera");
-                _db.CV_USER.Add(newUser);
-                Console.WriteLine("poslije usera");
-                _db.SaveChanges();
+                
+                _db.UserInfoes.Add(info);
+                Task<int> a = _db.SaveChangesAsync();
+                a.Wait();
             }
             catch (Exception e)
             {
                 throw new Exceptions.SSOBaseException("add new user to db", e);
             }
 
-            return true;
+            
+            return Task<bool>.FromResult(true);
         }
 
         private bool checkPassword(string password)

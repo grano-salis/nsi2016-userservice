@@ -12,18 +12,18 @@ namespace SSO.WCFService
     using System;
     using System.Collections.Generic;
     
-    public partial class CV_ROLES
+    public partial class Roles
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CV_ROLES()
+        public Roles()
         {
-            this.CV_MANAGE_ROLES = new HashSet<CV_MANAGE_ROLES>();
+            this.ManageRole = new HashSet<ManageRole>();
         }
     
         public int ID { get; set; }
-        public string GROUP_NAME { get; set; }
+        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CV_MANAGE_ROLES> CV_MANAGE_ROLES { get; set; }
+        public virtual ICollection<ManageRole> ManageRole { get; set; }
     }
 }

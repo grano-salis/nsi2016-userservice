@@ -99,34 +99,22 @@
     <Compile Include="BusinessLogic\Account.svc.cs">
       <DependentUpon>Account.svc</DependentUpon>
     </Compile>
-    <Compile Include="CV_CLAIM.cs">
-      <DependentUpon>SSOModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CV_FRAGMENT_TYPE.cs">
-      <DependentUpon>SSOModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CV_LOG.cs">
-      <DependentUpon>SSOModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CV_MANAGE_ROLES.cs">
-      <DependentUpon>SSOModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CV_ROLES.cs">
-      <DependentUpon>SSOModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CV_USER.cs">
-      <DependentUpon>SSOModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CV_USER_INFO.cs">
-      <DependentUpon>SSOModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CV_XML_FRAGMENT.cs">
+    <Compile Include="Claim.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContracts\LoginRequest.cs" />
     <Compile Include="Exceptions\SSOBaseException.cs" />
     <Compile Include="Exceptions\RegistrationExceptions.cs" />
     <Compile Include="Exceptions\WrongCredentialsException.cs" />
+    <Compile Include="Log.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ManageRole.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Roles.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ServiceInterfaces\IAccountManagement.cs" />
     <Compile Include="ServiceInterfaces\IAccount.cs" />
     <Compile Include="ServiceInterfaces\IIdentity.cs" />
@@ -150,6 +138,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SSOModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInfo.cs">
+      <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

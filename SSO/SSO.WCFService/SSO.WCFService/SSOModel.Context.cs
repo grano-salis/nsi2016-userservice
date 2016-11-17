@@ -25,13 +25,11 @@ namespace SSO.WCFService
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<CV_CLAIM> CV_CLAIM { get; set; }
-        public virtual DbSet<CV_FRAGMENT_TYPE> CV_FRAGMENT_TYPE { get; set; }
-        public virtual DbSet<CV_LOG> CV_LOG { get; set; }
-        public virtual DbSet<CV_MANAGE_ROLES> CV_MANAGE_ROLES { get; set; }
-        public virtual DbSet<CV_ROLES> CV_ROLES { get; set; }
-        public virtual DbSet<CV_USER> CV_USER { get; set; }
-        public virtual DbSet<CV_USER_INFO> CV_USER_INFO { get; set; }
-        public virtual DbSet<CV_XML_FRAGMENT> CV_XML_FRAGMENT { get; set; }
+        public virtual DbSet<Claim> Claims { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<ManageRole> ManageRoles { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserInfo> UserInfoes { get; set; }
     }
 }

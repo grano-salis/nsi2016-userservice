@@ -11,33 +11,32 @@ namespace SSO.WCFService
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class CV_USER
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CV_USER()
+        public User()
         {
-            this.CV_CLAIM = new HashSet<CV_CLAIM>();
-            this.CV_LOG = new HashSet<CV_LOG>();
-            this.CV_MANAGE_ROLES = new HashSet<CV_MANAGE_ROLES>();
-            this.CV_USER_INFO = new HashSet<CV_USER_INFO>();
-            this.CV_XML_FRAGMENT = new HashSet<CV_XML_FRAGMENT>();
+            this.Claim = new HashSet<Claim>();
+            this.Log = new HashSet<Log>();
+            this.ManageRole = new HashSet<ManageRole>();
+            this.UserInfo = new HashSet<UserInfo>();
         }
     
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public string USERNAME { get; set; }
-        public string PASSWORD { get; set; }
-        public string SALT { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Salt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CV_CLAIM> CV_CLAIM { get; set; }
+        public virtual ICollection<Claim> Claim { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CV_LOG> CV_LOG { get; set; }
+        public virtual ICollection<Log> Log { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CV_MANAGE_ROLES> CV_MANAGE_ROLES { get; set; }
+        public virtual ICollection<ManageRole> ManageRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CV_USER_INFO> CV_USER_INFO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CV_XML_FRAGMENT> CV_XML_FRAGMENT { get; set; }
+        public virtual ICollection<UserInfo> UserInfo { get; set; }
     }
 }
