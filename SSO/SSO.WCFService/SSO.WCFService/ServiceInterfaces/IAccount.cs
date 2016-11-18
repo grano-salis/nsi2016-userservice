@@ -13,10 +13,10 @@ namespace SSO.WCFService.ServiceInterfaces
     interface IAccount
     {
         [OperationContract]
-        Boolean Login(LoginRequest loginModel);//Generate a new valid token for a user, TODO: change input and output parameters
+        String Login(LoginRequest loginModel);//Generate a new valid token for a user, TODO: change input and output parameters
 
         [OperationContract]
-        Boolean Register(RegisterRequest registerModel);//Add new user, TODO: change input and output parameters
+        Task<Boolean> Register(RegisterRequest registerModel);//Add new user, TODO: change input and output parameters
 
         [OperationContract]
         Boolean ChangePassword(); //TODO: change input and output parameters

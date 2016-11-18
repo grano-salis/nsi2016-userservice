@@ -2,3 +2,5 @@
 SSO/SSO.WCFService/SSO.WCFService/bin/
 SSO/SSO.WCFService/SSO.WCFService/obj/
 SSO/SSO.WCFService/packages
+**/bin/
+**/obj/
