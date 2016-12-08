@@ -15,13 +15,16 @@ namespace SSO.WCFService.ServiceInterfaces
     {
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json)]
-        String Login(LoginRequest loginModel);//Generate a new valid token for a user, TODO: change input and output parameters
+        ActionResult Login(LoginRequest loginModel);//Generate a new valid token for a user, TODO: change input and output parameters
 
         [OperationContract]
-        Task<Boolean> Register(RegisterRequest registerModel);//Add new user, TODO: change input and output parameters
+        [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST")]
+        Task<ActionResult> Register(RegisterRequest registerModel);//Add new user, TODO: change input and output parameters
 
         [OperationContract]
-        Boolean ChangePassword(); //TODO: change input and output parameters
+        [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST")]
+        [FaultContract(typeof(MyFault))]
+        ActionResult ChangePassword(); //TODO: change input and output parameters
     }
 
 }

@@ -1,8 +1,12 @@
-﻿using SSO.WCFService.ServiceInterfaces;
+﻿using SSO.WCFService.DataContracts;
+using SSO.WCFService.Exceptions;
+using SSO.WCFService.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -12,37 +16,40 @@ namespace SSO.WCFService.BusinessLogic
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class Account : IAccount
     {
-        public bool ChangePassword()
+        private AccountService _mngr { get; set; }
+        private SSOContext _db { get; set; }
+
+        public Account()
         {
-            /*try
-            {
-                SSOContext _db = new SSOContext();
-                UserLuka l = new UserLuka();
-                l.NAME = "luka lol";
+            _db = new SSOContext();
+            _mngr = new AccountService(_db);
 
-                _db.UserLukas.Add(l);
-                _db.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                throw;
-            }*/
-           
-
-            return true;
-            throw new NotImplementedException();
         }
 
-        public string Login(DataContracts.LoginRequest loginModel)
+        public ActionResult ChangePassword()
         {
-            if(loginModel == null)
+            WebOperationContext ctx = WebOperationContext.Current;
+            try
+            {
+                _mngr.ChangePassword();
+                return new ActionResult { Message = "Password is successfully changed." };
+            }
+            catch (WebFaultException<MyFault> e)
+            {
+                ctx.OutgoingResponse.StatusCode = e.StatusCode;
+                return new ActionResult { Message = e.Detail.Details };
+            }
+        }
+
+        public ActionResult Login(LoginRequest loginModel)
+        {
+            if (loginModel == null)
             {
                 throw new ArgumentNullException("Login Model required.");
             }
 
-            SSOContext _db = new SSOContext();
             var user = _db.Users.SingleOrDefault(u => u.Username.Equals(loginModel.Username));
-            if(user == null)
+            if (user == null)
             {
                 throw new Exceptions.WeakPasswordException();
             }
@@ -56,7 +63,7 @@ namespace SSO.WCFService.BusinessLogic
 
             // TODO change database password field to nvarchar
             // 44 is length of
-            if (!passwordHashS.Equals(user.Password.Substring(0,44)))
+            if (!passwordHashS.Equals(user.Password.Substring(0, 44)))
             {
                 throw new Exceptions.WrongCredentialsException();
             }
@@ -79,7 +86,11 @@ namespace SSO.WCFService.BusinessLogic
             {
                 _db.Claims.Add(claim);
                 _db.SaveChanges();
-                return tokenHex;
+                HttpContext.Current.Response.Cookies.Add(new HttpCookie("token", tokenHex));
+                return new ActionResult
+                {
+                    Message = "Successful login."
+                };
             }
             catch (Exception e)
             {
@@ -87,7 +98,7 @@ namespace SSO.WCFService.BusinessLogic
             }
         }
 
-        public Task<bool> Register(DataContracts.RegisterRequest registerModel)
+        public Task<ActionResult> Register(DataContracts.RegisterRequest registerModel)
         {
             if (registerModel == null)
             {
@@ -99,10 +110,8 @@ namespace SSO.WCFService.BusinessLogic
                 throw new Exceptions.WeakPasswordException();
             }
 
-            SSOContext _db;
             try
             {
-                _db = new SSOContext();
                 if (_db.Users.SingleOrDefault(u => u.Username.Equals(registerModel.Username)) != null)
                 {
                     // User with same username already exists
@@ -157,7 +166,7 @@ namespace SSO.WCFService.BusinessLogic
             //Save user
             try
             {
-                
+
                 _db.UserInfoes.Add(info);
                 Task<int> a = _db.SaveChangesAsync();
                 a.Wait();
@@ -167,8 +176,11 @@ namespace SSO.WCFService.BusinessLogic
                 throw new Exceptions.SSOBaseException("add new user to db", e);
             }
 
-            
-            return Task<bool>.FromResult(true);
+
+            return Task<bool>.FromResult(new ActionResult
+            {
+                Message = "Successful register."
+            });
         }
 
         private bool checkPassword(string password)

@@ -99,10 +99,14 @@
     <Compile Include="BusinessLogic\Account.svc.cs">
       <DependentUpon>Account.svc</DependentUpon>
     </Compile>
+    <Compile Include="BusinessLogic\AccountService.cs" />
     <Compile Include="Claim.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataContracts\ActionResult.cs" />
     <Compile Include="DataContracts\LoginRequest.cs" />
+    <Compile Include="DataContracts\MyFault.cs" />
+    <Compile Include="Exceptions\customWebException.cs" />
     <Compile Include="Exceptions\SSOBaseException.cs" />
     <Compile Include="Exceptions\RegistrationExceptions.cs" />
     <Compile Include="Exceptions\WrongCredentialsException.cs" />
