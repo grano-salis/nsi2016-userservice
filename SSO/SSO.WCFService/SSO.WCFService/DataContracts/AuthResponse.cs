@@ -11,15 +11,20 @@ namespace SSO.WCFService.DataContracts
     {
         [DataMember]
         public string Username { get; set; }
+
         [DataMember]
-        public List<String> RoleIds { get; set; }
+        public int UserId { get; set; }
+
         [DataMember]
-        public String UserId { get; set; }
+        public string Email { get; set; }
+
         [DataMember]
-        public String FirstName { get; set; }
+        public string FirstName { get; set; }
+
         [DataMember]
-        public String LastName { get; set; }
+        public string LastName { get; set; }
+
         [DataMember]
-        public String Email { get; set; }
+        public List<int> RoleIds { get; set; }
     }
 }

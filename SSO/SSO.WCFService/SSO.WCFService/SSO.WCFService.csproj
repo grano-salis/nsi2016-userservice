@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BusinessLogic\Account.svc" />
+    <Content Include="BusinessLogic\Identity.svc" />
     <Content Include="Service1.svc" />
     <Content Include="SSOModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -100,16 +101,22 @@
       <DependentUpon>Account.svc</DependentUpon>
     </Compile>
     <Compile Include="BusinessLogic\AccountServiceImplementation.cs" />
+    <Compile Include="BusinessLogic\Identity.svc.cs">
+      <DependentUpon>Identity.svc</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessLogic\IdentityServiceImplementation.cs" />
     <Compile Include="Claim.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataContracts\ActionResult.cs" />
+    <Compile Include="DataContracts\AuthResponse.cs" />
     <Compile Include="DataContracts\LoginRequest.cs" />
     <Compile Include="DataContracts\MyFault.cs" />
     <Compile Include="Exceptions\customWebException.cs" />
     <Compile Include="Exceptions\SSOBaseException.cs" />
     <Compile Include="Exceptions\RegistrationExceptions.cs" />
     <Compile Include="Exceptions\WrongCredentialsException.cs" />
+    <Compile Include="Helpers\CustomRoleProvider.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
@@ -152,7 +159,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Entities\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
