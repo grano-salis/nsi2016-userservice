@@ -99,7 +99,7 @@
     <Compile Include="BusinessLogic\Account.svc.cs">
       <DependentUpon>Account.svc</DependentUpon>
     </Compile>
-    <Compile Include="BusinessLogic\AccountService.cs" />
+    <Compile Include="BusinessLogic\AccountServiceImplementation.cs" />
     <Compile Include="Claim.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>

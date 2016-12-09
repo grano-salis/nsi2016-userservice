@@ -19,7 +19,7 @@ namespace SSO.WCFService.ServiceInterfaces
 
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST")]
-        Task<ActionResult> Register(RegisterRequest registerModel);//Add new user, TODO: change input and output parameters
+        ActionResult Register(RegisterRequest registerModel);//Add new user, TODO: change input and output parameters
 
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST")]
