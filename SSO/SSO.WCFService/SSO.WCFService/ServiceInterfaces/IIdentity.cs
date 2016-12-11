@@ -11,9 +11,9 @@ namespace SSO.WCFService.ServiceInterfaces
     interface IIdentity
     {
         [OperationContract]
-        Boolean Logout();//Set claim property Valid to false, TODO: change input and output parameters
+        Boolean Logout(string token);//Set claim property Valid to false, TODO: change input and output parameters
 
         [OperationContract]
-        Boolean Auth(); //Get user claims if user has provided a valid token, TODO: change input and output parameters
+        Boolean Auth(string token); //Get user claims if user has provided a valid token, TODO: change input and output parameters
     }
 }

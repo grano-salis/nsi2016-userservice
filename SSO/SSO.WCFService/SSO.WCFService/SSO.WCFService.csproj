@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BusinessLogic\Account.svc" />
+    <Content Include="BusinessLogic\Identity.svc" />
     <Content Include="Service1.svc" />
     <Content Include="SSOModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -99,6 +100,9 @@
     <Compile Include="BusinessLogic\Account.svc.cs">
       <DependentUpon>Account.svc</DependentUpon>
     </Compile>
+    <Compile Include="BusinessLogic\Identity.svc.cs">
+      <DependentUpon>Identity.svc</DependentUpon>
+    </Compile>
     <Compile Include="Claim.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
@@ -106,6 +110,7 @@
     <Compile Include="Exceptions\SSOBaseException.cs" />
     <Compile Include="Exceptions\RegistrationExceptions.cs" />
     <Compile Include="Exceptions\WrongCredentialsException.cs" />
+    <Compile Include="Exceptions\WrongOrExpiredToken.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>

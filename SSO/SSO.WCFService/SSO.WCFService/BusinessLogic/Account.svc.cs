@@ -71,7 +71,7 @@ namespace SSO.WCFService.BusinessLogic
             String tokenHex = BitConverter.ToString(tokenB).Replace("-", String.Empty);
             Claim claim = new Claim();
             claim.Token = tokenHex;
-            //claim.VALID = '1';
+            claim.Valid = "1";
             claim.Created = DateTime.Now;
             claim.User = user;
 
