@@ -19,7 +19,7 @@ namespace SSO.WCFService.Test
             reg.Email = "pejovicluka4542@gmail.com";
             reg.Password = "lukaJeZakon";
 
-            Assert.IsTrue(svc.Register(reg));
+            Assert.IsNotNull(svc.Register(reg));
             
             svc.Close();
         }

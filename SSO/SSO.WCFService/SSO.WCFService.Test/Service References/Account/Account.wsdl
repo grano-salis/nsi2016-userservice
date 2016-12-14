@@ -25,6 +25,9 @@
   <wsdl:message name="IAccount_ChangePassword_OutputMessage">
     <wsdl:part name="parameters" element="tns:ChangePasswordResponse" />
   </wsdl:message>
+  <wsdl:message name="IAccount_ChangePassword_MyFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/SSO.WCFService.DataContracts" name="detail" element="q1:MyFault" />
+  </wsdl:message>
   <wsdl:portType name="IAccount">
     <wsdl:operation name="Login">
       <wsdl:input wsaw:Action="http://tempuri.org/IAccount/Login" message="tns:IAccount_Login_InputMessage" />
@@ -37,6 +40,7 @@
     <wsdl:operation name="ChangePassword">
       <wsdl:input wsaw:Action="http://tempuri.org/IAccount/ChangePassword" message="tns:IAccount_ChangePassword_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IAccount/ChangePasswordResponse" message="tns:IAccount_ChangePassword_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IAccount/ChangePasswordMyFaultFault" name="MyFaultFault" message="tns:IAccount_ChangePassword_MyFaultFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IAccount" type="tns:IAccount">
@@ -67,6 +71,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="MyFaultFault">
+        <soap:fault use="literal" name="MyFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="Account">

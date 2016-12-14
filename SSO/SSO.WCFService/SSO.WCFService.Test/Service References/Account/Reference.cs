@@ -16,22 +16,23 @@ namespace SSO.WCFService.Test.Account {
     public interface IAccount {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/Login", ReplyAction="http://tempuri.org/IAccount/LoginResponse")]
-        string Login(SSO.WCFService.DataContracts.LoginRequest loginModel);
+        SSO.WCFService.DataContracts.ActionResult Login(SSO.WCFService.DataContracts.LoginRequest loginModel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/Login", ReplyAction="http://tempuri.org/IAccount/LoginResponse")]
-        System.Threading.Tasks.Task<string> LoginAsync(SSO.WCFService.DataContracts.LoginRequest loginModel);
+        System.Threading.Tasks.Task<SSO.WCFService.DataContracts.ActionResult> LoginAsync(SSO.WCFService.DataContracts.LoginRequest loginModel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/Register", ReplyAction="http://tempuri.org/IAccount/RegisterResponse")]
-        bool Register(SSO.WCFService.DataContracts.RegisterRequest registerModel);
+        SSO.WCFService.DataContracts.ActionResult Register(SSO.WCFService.DataContracts.RegisterRequest registerModel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/Register", ReplyAction="http://tempuri.org/IAccount/RegisterResponse")]
-        System.Threading.Tasks.Task<bool> RegisterAsync(SSO.WCFService.DataContracts.RegisterRequest registerModel);
+        System.Threading.Tasks.Task<SSO.WCFService.DataContracts.ActionResult> RegisterAsync(SSO.WCFService.DataContracts.RegisterRequest registerModel);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/ChangePassword", ReplyAction="http://tempuri.org/IAccount/ChangePasswordResponse")]
-        bool ChangePassword();
+        [System.ServiceModel.FaultContractAttribute(typeof(SSO.WCFService.DataContracts.MyFault), Action="http://tempuri.org/IAccount/ChangePasswordMyFaultFault", Name="MyFault", Namespace="http://schemas.datacontract.org/2004/07/SSO.WCFService.DataContracts")]
+        SSO.WCFService.DataContracts.ActionResult ChangePassword();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAccount/ChangePassword", ReplyAction="http://tempuri.org/IAccount/ChangePasswordResponse")]
-        System.Threading.Tasks.Task<bool> ChangePasswordAsync();
+        System.Threading.Tasks.Task<SSO.WCFService.DataContracts.ActionResult> ChangePasswordAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -61,27 +62,27 @@ namespace SSO.WCFService.Test.Account {
                 base(binding, remoteAddress) {
         }
         
-        public string Login(SSO.WCFService.DataContracts.LoginRequest loginModel) {
+        public SSO.WCFService.DataContracts.ActionResult Login(SSO.WCFService.DataContracts.LoginRequest loginModel) {
             return base.Channel.Login(loginModel);
         }
         
-        public System.Threading.Tasks.Task<string> LoginAsync(SSO.WCFService.DataContracts.LoginRequest loginModel) {
+        public System.Threading.Tasks.Task<SSO.WCFService.DataContracts.ActionResult> LoginAsync(SSO.WCFService.DataContracts.LoginRequest loginModel) {
             return base.Channel.LoginAsync(loginModel);
         }
         
-        public bool Register(SSO.WCFService.DataContracts.RegisterRequest registerModel) {
+        public SSO.WCFService.DataContracts.ActionResult Register(SSO.WCFService.DataContracts.RegisterRequest registerModel) {
             return base.Channel.Register(registerModel);
         }
         
-        public System.Threading.Tasks.Task<bool> RegisterAsync(SSO.WCFService.DataContracts.RegisterRequest registerModel) {
+        public System.Threading.Tasks.Task<SSO.WCFService.DataContracts.ActionResult> RegisterAsync(SSO.WCFService.DataContracts.RegisterRequest registerModel) {
             return base.Channel.RegisterAsync(registerModel);
         }
         
-        public bool ChangePassword() {
+        public SSO.WCFService.DataContracts.ActionResult ChangePassword() {
             return base.Channel.ChangePassword();
         }
         
-        public System.Threading.Tasks.Task<bool> ChangePasswordAsync() {
+        public System.Threading.Tasks.Task<SSO.WCFService.DataContracts.ActionResult> ChangePasswordAsync() {
             return base.Channel.ChangePasswordAsync();
         }
     }

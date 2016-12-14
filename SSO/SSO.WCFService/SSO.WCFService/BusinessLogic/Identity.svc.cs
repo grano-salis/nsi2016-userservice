@@ -1,10 +1,15 @@
-﻿using SSO.WCFService.ServiceInterfaces;
+﻿using SSO.WCFService.DataContracts;
+using SSO.WCFService.Exceptions;
+using SSO.WCFService.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
+using System.Web;
 
 namespace SSO.WCFService.BusinessLogic
 {
@@ -12,22 +17,39 @@ namespace SSO.WCFService.BusinessLogic
     // NOTE: In order to launch WCF Test Client for testing this service, please select Identity.svc or Identity.svc.cs at the Solution Explorer and start debugging.
     public class Identity : IIdentity
     {
-        public bool Auth(string token)
+        private IdentityServiceImplementation _mngr { get; set; }
+        private SSOContext _db { get; set; }
+        private WebOperationContext _ctx { get; set; }
+
+        public Identity()
         {
-            SSOContext _db = new SSOContext();
-            var claim = _db.Claims.SingleOrDefault(c => c.Valid.Equals("1") && c.Token.Equals(token));
-            if(claim == null)
-            {
-                // or return false
-                throw new Exceptions.WrongCredentialsException();
-            }
-
-            return true;
-
-            throw new NotImplementedException();
+            _db = new SSOContext();
+            _ctx = WebOperationContext.Current;
+            _mngr = new IdentityServiceImplementation(_db);
         }
 
-        public bool Logout(string token)
+        
+
+        public AuthResponse Auth(string token)
+        {
+            try
+            {
+                return _mngr.Auth(token);
+            }
+            catch (SSOBaseException e)
+            {
+                var myf = new MyFault { Details = e.Message };
+                throw new WebFaultException<MyFault>(myf, e.StatusCode);
+            }
+            catch (Exception)
+            {
+                var myf = new MyFault { Details = "There has been an error while change password action." };
+                throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
+            }
+
+        }
+
+        public void Logout(string token)
         {
             throw new NotImplementedException();
         }
