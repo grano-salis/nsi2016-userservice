@@ -53,14 +53,21 @@ namespace SSO.WCFService.BusinessLogic
         {
             try
             {
-               return _mngr.Login(loginModel, _ctx);
+                var claim = _mngr.Login(loginModel);
+                var cookie = String.Format("sid={0}; Domain={1}; Path=/; HttpOnly", claim.Token, "localhost");
+                _ctx.OutgoingResponse.Headers.Add("Set-Cookie", cookie);
+
+                return new ActionResult
+                {
+                    Message = "Successful login."
+                };
             }
             catch (SSOBaseException e)
             {
                 _ctx.OutgoingResponse.StatusCode = e.StatusCode;
                 return new ActionResult { Message = e.Message };
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 _ctx.OutgoingResponse.StatusCode = HttpStatusCode.InternalServerError;
                 return new ActionResult { Message = "There has been an error while login action." };
@@ -91,9 +98,16 @@ namespace SSO.WCFService.BusinessLogic
 
         public AuthResponse Auth()
         {
-            string token = _ctx.IncomingRequest.Headers[HttpRequestHeader.Cookie];
+            
             try
             {
+                string token = HttpContext.Current.Request.Cookies["sid"].Value;
+
+                if (String.IsNullOrWhiteSpace(token))
+                {
+                    throw new WrongOrExpiredToken();
+                }
+
                 return _identityMngr.Auth(token);
             }
             catch (SSOBaseException e)
@@ -101,7 +115,7 @@ namespace SSO.WCFService.BusinessLogic
                 var myf = new MyFault { Details = e.Message };
                 throw new WebFaultException<MyFault>(myf, e.StatusCode);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 var myf = new MyFault { Details = "There has been an error in authorization process." };
                 throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);

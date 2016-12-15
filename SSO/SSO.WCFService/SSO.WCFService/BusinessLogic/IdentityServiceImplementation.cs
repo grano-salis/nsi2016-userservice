@@ -24,7 +24,7 @@ namespace SSO.WCFService.BusinessLogic
                 throw new Exceptions.WrongCredentialsException();
             }
 
-            var user = _db.Users.Where(u => u.ID == claim.UserID)
+            var user = _db.Users.Where(u => u.ID == claim.UserID).ToList()
                                     .Select(u => new {
                                         UserId = u.ID,
                                         Username = u.Username,
@@ -33,7 +33,9 @@ namespace SSO.WCFService.BusinessLogic
                                                     .Where(mr => mr.UserID == u.ID)
                                                     .Select(mr => mr.Role.Name)
                                     }).FirstOrDefault();
-
+            /*_db.ManageRoles.Include(mr => mr.Role)
+                                                    .Where(mr => mr.UserID == u.ID)
+                                                    .Select(mr => mr.Role.Name)*/
             if(user == null)
             {
                 throw new Exception("This shouldn happen.");

@@ -47,7 +47,7 @@ namespace SSO.WCFService.BusinessLogic
             throw new SSOBaseException("This method is currently not implemented.", System.Net.HttpStatusCode.NotImplemented);
         }
 
-        public ActionResult Login(LoginRequest loginModel, WebOperationContext ctx)
+        public Claim Login(LoginRequest loginModel)
         {
            
             if (loginModel == null)
@@ -85,19 +85,15 @@ namespace SSO.WCFService.BusinessLogic
             String tokenHex = BitConverter.ToString(tokenB).Replace("-", String.Empty);
             Claim claim = new Claim();
             claim.Token = tokenHex;
-            //claim.VALID = '1';
+            claim.Valid = "1";
             claim.Created = DateTime.Now;
             claim.User = user;
 
             _db.Claims.Add(claim);
             _db.SaveChanges();
+
+            return claim;
             
-            ctx.OutgoingResponse.Headers.Add(HttpRequestHeader.Cookie, tokenHex);
-            //_ctx.Response.Cookies.Add(new HttpCookie("token", tokenHex));
-            return new ActionResult
-            {
-                Message = "Successful login."
-            };
         }
 
         public ActionResult Register(RegisterRequest registerModel)
