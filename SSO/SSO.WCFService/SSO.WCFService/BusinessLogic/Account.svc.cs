@@ -98,7 +98,6 @@ namespace SSO.WCFService.BusinessLogic
 
         public AuthResponse Auth()
         {
-            
             try
             {
                 string token = HttpContext.Current.Request.Cookies["sid"].Value;
