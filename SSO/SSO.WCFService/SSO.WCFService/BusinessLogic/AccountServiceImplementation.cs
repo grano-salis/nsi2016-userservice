@@ -47,9 +47,9 @@ namespace SSO.WCFService.BusinessLogic
             throw new SSOBaseException("This method is currently not implemented.", System.Net.HttpStatusCode.NotImplemented);
         }
 
-        public ActionResult Login(LoginRequest loginModel, HttpContext ctx)
+        public ActionResult Login(LoginRequest loginModel, WebOperationContext ctx)
         {
-            HttpContext _ctx = ctx;
+           
             if (loginModel == null)
             {
                 throw new SSOBaseException("Login Model required.", HttpStatusCode.BadRequest);
@@ -91,8 +91,9 @@ namespace SSO.WCFService.BusinessLogic
 
             _db.Claims.Add(claim);
             _db.SaveChanges();
-
-            _ctx.Response.Cookies.Add(new HttpCookie("token", tokenHex));
+            
+            ctx.OutgoingResponse.Headers.Add(HttpRequestHeader.Cookie, tokenHex);
+            //_ctx.Response.Cookies.Add(new HttpCookie("token", tokenHex));
             return new ActionResult
             {
                 Message = "Successful login."

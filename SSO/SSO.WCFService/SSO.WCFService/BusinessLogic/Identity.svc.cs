@@ -43,7 +43,7 @@ namespace SSO.WCFService.BusinessLogic
             }
             catch (Exception)
             {
-                var myf = new MyFault { Details = "There has been an error while change password action." };
+                var myf = new MyFault { Details = "There has been an error in authorization process." };
                 throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
             }
 

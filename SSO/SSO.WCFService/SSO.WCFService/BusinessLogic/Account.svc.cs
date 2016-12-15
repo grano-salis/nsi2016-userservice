@@ -17,6 +17,7 @@ namespace SSO.WCFService.BusinessLogic
     public class Account : IAccount
     {
         private AccountServiceImplementation _mngr { get; set; }
+        private IdentityServiceImplementation _identityMngr { get; set; }
         private SSOContext _db { get; set; }
         private WebOperationContext _ctx { get; set; }
 
@@ -25,7 +26,7 @@ namespace SSO.WCFService.BusinessLogic
             _db = new SSOContext();
             _ctx = WebOperationContext.Current;
             _mngr = new AccountServiceImplementation(_db);
-
+            _identityMngr = new IdentityServiceImplementation(_db);
         }
 
         public ActionResult ChangePassword()
@@ -52,7 +53,7 @@ namespace SSO.WCFService.BusinessLogic
         {
             try
             {
-               return _mngr.Login(loginModel, HttpContext.Current);
+               return _mngr.Login(loginModel, _ctx);
             }
             catch (SSOBaseException e)
             {
@@ -88,6 +89,24 @@ namespace SSO.WCFService.BusinessLogic
             }
         }
 
-       
+        public AuthResponse Auth()
+        {
+            string token = _ctx.IncomingRequest.Headers[HttpRequestHeader.Cookie];
+            try
+            {
+                return _identityMngr.Auth(token);
+            }
+            catch (SSOBaseException e)
+            {
+                var myf = new MyFault { Details = e.Message };
+                throw new WebFaultException<MyFault>(myf, e.StatusCode);
+            }
+            catch (Exception)
+            {
+                var myf = new MyFault { Details = "There has been an error in authorization process." };
+                throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
+            }
+
+        }
     }
 }

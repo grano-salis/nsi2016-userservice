@@ -25,6 +25,11 @@ namespace SSO.WCFService.ServiceInterfaces
         [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST")]
         [FaultContract(typeof(MyFault))]
         ActionResult ChangePassword(); //TODO: change input and output parameters
+
+        [OperationContract] //used with parameter only when used by admin to get info about user with userId 
+        [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "GET")]
+        [FaultContract(typeof(MyFault))]
+        AuthResponse Auth();
     }
 
 }
