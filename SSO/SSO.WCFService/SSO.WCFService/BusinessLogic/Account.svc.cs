@@ -92,6 +92,7 @@ namespace SSO.WCFService.BusinessLogic
         public AuthResponse Auth()
         {
             string token = _ctx.IncomingRequest.Headers[HttpRequestHeader.Cookie];
+            var bl = 44;
             try
             {
                 return _identityMngr.Auth(token);
