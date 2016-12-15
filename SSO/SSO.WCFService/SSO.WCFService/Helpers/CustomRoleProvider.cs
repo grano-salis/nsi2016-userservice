@@ -23,6 +23,7 @@ namespace SSO.WCFService.Helpers
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)
         {
+            //TO DO: this
             throw new NotImplementedException();
         }
 
@@ -48,6 +49,7 @@ namespace SSO.WCFService.Helpers
 
         public override string[] GetRolesForUser(string username)
         {
+            //TO DO: this
             throw new NotImplementedException();
         }
 
@@ -58,6 +60,7 @@ namespace SSO.WCFService.Helpers
 
         public override bool IsUserInRole(string username, string roleName)
         {
+            //TO DO: this
             throw new NotImplementedException();
         }
 

@@ -39,7 +39,7 @@ namespace SSO.WCFService.BusinessLogic
                 _ctx.OutgoingResponse.StatusCode = e.StatusCode;
                 return new ActionResult { Message = e.Message };
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _ctx.OutgoingResponse.StatusCode = HttpStatusCode.InternalServerError;
                 return new ActionResult { Message = "There has been an error while change password action." };
@@ -57,7 +57,7 @@ namespace SSO.WCFService.BusinessLogic
                 _ctx.OutgoingResponse.StatusCode = e.StatusCode;
                 return new ActionResult { Message = e.Message };
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _ctx.OutgoingResponse.StatusCode = HttpStatusCode.InternalServerError;
                 return new ActionResult { Message = "There has been an error while login action." };
@@ -79,7 +79,7 @@ namespace SSO.WCFService.BusinessLogic
                 };
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
                 _ctx.OutgoingResponse.StatusCode = HttpStatusCode.InternalServerError;
                 return new ActionResult { Message = "There has been an error while register action." };
