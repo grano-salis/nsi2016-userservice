@@ -81,6 +81,7 @@
   <ItemGroup>
     <Content Include="BusinessLogic\Account.svc" />
     <Content Include="BusinessLogic\Identity.svc" />
+    <Content Include="global.asax" />
     <Content Include="Service1.svc" />
     <Content Include="SSOModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -116,6 +117,9 @@
     <Compile Include="Exceptions\SSOBaseException.cs" />
     <Compile Include="Exceptions\RegistrationExceptions.cs" />
     <Compile Include="Exceptions\WrongCredentialsException.cs" />
+    <Compile Include="global.asax.cs">
+      <DependentUpon>global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\CustomRoleProvider.cs" />
     <Compile Include="Exceptions\WrongOrExpiredToken.cs" />
     <Compile Include="Log.cs">
