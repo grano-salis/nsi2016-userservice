@@ -15,8 +15,8 @@ namespace SSO.WCFService.Test
             DataContracts.RegisterRequest reg = new DataContracts.RegisterRequest();
             reg.FirstName = "Luka";
             reg.LastName = "Pejović";
-            reg.Username = "Luka454";
-            reg.Email = "pejovicluka454@gmail.com";
+            reg.Username = "Luka4542";
+            reg.Email = "pejovicluka4542@gmail.com";
             reg.Password = "lukaJeZakon";
 
             Assert.IsNotNull(svc.Register(reg));

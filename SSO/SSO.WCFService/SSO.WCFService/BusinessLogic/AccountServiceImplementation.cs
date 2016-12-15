@@ -20,7 +20,7 @@ namespace SSO.WCFService.BusinessLogic
             this._db = _db;
         }
 
-        public ActionResult ChangePassword()
+        public ActionResult ChangePassword(User user)
         {
             /*
                SSOContext _db = new SSOContext();
@@ -30,6 +30,20 @@ namespace SSO.WCFService.BusinessLogic
                _db.UserLukas.Add(l);
                _db.SaveChanges();
            */
+            // Succeful login
+            // Make token
+            var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
+            byte[] tokenB = new byte[40];
+            rng.GetBytes(tokenB);
+
+            //Convert to hex
+            String tokenHex = BitConverter.ToString(tokenB).Replace("-", String.Empty);
+            Claim claim = new Claim();
+            claim.Token = tokenHex;
+            claim.Valid = "1";
+            claim.Created = DateTime.Now;
+            claim.User = user;
+
             throw new SSOBaseException("This method is currently not implemented.", System.Net.HttpStatusCode.NotImplemented);
         }
 

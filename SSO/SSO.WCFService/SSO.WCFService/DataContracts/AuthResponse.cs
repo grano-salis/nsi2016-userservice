@@ -25,6 +25,6 @@ namespace SSO.WCFService.DataContracts
         public string LastName { get; set; }
 
         [DataMember]
-        public List<int> RoleIds { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

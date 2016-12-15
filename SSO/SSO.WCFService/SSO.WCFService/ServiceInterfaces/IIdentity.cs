@@ -13,10 +13,10 @@ namespace SSO.WCFService.ServiceInterfaces
     interface IIdentity
     {
         [OperationContract]
-        void Logout();//Set claim property Valid to false, TODO: change input and output parameters
+        void Logout(string token);//Set claim property Valid to false, TODO: change input and output parameters
 
         [OperationContract] //used with parameter only when used by admin to get info about user with userId 
         [FaultContract(typeof(MyFault))]
-        AuthResponse Auth(int? userId); //Get user claims if user has provided a valid token, TODO: change input and output parameters
+        AuthResponse Auth(string token); //Get user claims if user has provided a valid token, TODO: change input and output parameters
     }
 }

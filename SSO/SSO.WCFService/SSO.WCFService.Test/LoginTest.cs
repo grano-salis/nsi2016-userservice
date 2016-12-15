@@ -12,7 +12,7 @@ namespace SSO.WCFService.Test
             Account.AccountClient svc = new Account.AccountClient();
             //BusinessLogic.Account svc = new BusinessLogic.Account();
             DataContracts.LoginRequest reg = new DataContracts.LoginRequest();
-            reg.Username = "Luka454";
+            reg.Username = "Luka4542";
             reg.Password = "lukaJeZakon";
 
             Assert.IsNotNull(svc.Login(reg));

@@ -7,6 +7,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="LoginRequest" nillable="true" type="tns:LoginRequest" />
+  <xs:complexType name="ActionResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ActionResult" nillable="true" type="tns:ActionResult" />
   <xs:complexType name="RegisterRequest">
     <xs:sequence>
       <xs:element name="Email" nillable="true" type="xs:string" />
@@ -17,4 +23,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="RegisterRequest" nillable="true" type="tns:RegisterRequest" />
+  <xs:complexType name="MyFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Details" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MyFault" nillable="true" type="tns:MyFault" />
 </xs:schema>

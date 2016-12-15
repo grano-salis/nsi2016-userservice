@@ -32,7 +32,9 @@ namespace SSO.WCFService.BusinessLogic
         {
             try
             {
-                return _mngr.ChangePassword();
+                // TODO get auth user
+                User user = null;
+                return _mngr.ChangePassword(user);
             }
             catch (SSOBaseException e)
             {

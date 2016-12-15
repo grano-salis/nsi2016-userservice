@@ -117,6 +117,7 @@
     <Compile Include="Exceptions\RegistrationExceptions.cs" />
     <Compile Include="Exceptions\WrongCredentialsException.cs" />
     <Compile Include="Helpers\CustomRoleProvider.cs" />
+    <Compile Include="Exceptions\WrongOrExpiredToken.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>

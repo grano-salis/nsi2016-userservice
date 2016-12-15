@@ -1,14 +1,14 @@
-﻿using SSO.WCFService.ServiceInterfaces;
+﻿using SSO.WCFService.DataContracts;
+using SSO.WCFService.Exceptions;
+using SSO.WCFService.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
-using SSO.WCFService.DataContracts;
 using System.ServiceModel.Web;
-using SSO.WCFService.Exceptions;
-using System.Net;
+using System.Text;
 using System.Web;
 
 namespace SSO.WCFService.BusinessLogic
@@ -17,7 +17,6 @@ namespace SSO.WCFService.BusinessLogic
     // NOTE: In order to launch WCF Test Client for testing this service, please select Identity.svc or Identity.svc.cs at the Solution Explorer and start debugging.
     public class Identity : IIdentity
     {
-
         private IdentityServiceImplementation _mngr { get; set; }
         private SSOContext _db { get; set; }
         private WebOperationContext _ctx { get; set; }
@@ -29,11 +28,13 @@ namespace SSO.WCFService.BusinessLogic
             _mngr = new IdentityServiceImplementation(_db);
         }
 
-        public AuthResponse Auth(int? userId)
+        
+
+        public AuthResponse Auth(string token)
         {
             try
             {
-                return _mngr.Auth(HttpContext.Current, userId);
+                return _mngr.Auth(token);
             }
             catch (SSOBaseException e)
             {
@@ -45,9 +46,10 @@ namespace SSO.WCFService.BusinessLogic
                 var myf = new MyFault { Details = "There has been an error while change password action." };
                 throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
             }
+
         }
 
-        public void Logout()
+        public void Logout(string token)
         {
             throw new NotImplementedException();
         }
