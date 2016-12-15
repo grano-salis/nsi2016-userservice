@@ -1,0 +1,26 @@
+<mob-navbar showMenu="false"></mob-navbar>
+<fixed-navbar ng-hide="!showNavbarFixed"></fixed-navbar>
+
+<nav id="a-navbar">
+  	<a ui-sref="home" class="brand wow animated fadeInDown">NSI '16</a>
+  	<div class="navbar wow animated fadeIn">
+  		<div class="nav-item">
+  			<a ui-sref="home" translate="NAV.HOME">HOME</a>
+  		</div>
+  		
+      
+
+  		<div class="nav-item">
+
+  			<a ng-if="!isLoggedIn()" ui-sref="login">
+  				<span translate="REG.LOGIN">LOG IN</span>
+          <span class="fa fa-user"></span>
+  			</a>
+        <a ui-sref="profile" ng-if="isLoggedIn()">
+          {{getCurrentUser().username}}
+          <i class="fa fa-user"></i>
+        </a>
+        
+  		</div>
+  	</div>
+</nav>

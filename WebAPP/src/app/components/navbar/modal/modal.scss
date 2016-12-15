@@ -1,0 +1,167 @@
+.nav-modal-backdrop{
+  z-index: 1490;
+  background-color: transparentize(#000,0.5);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  &.ng-hide-remove{
+    animation:0.5s fadeIn ease;
+  }
+
+  &.ng-hide-add{
+    animation:0.5s fadeOut ease;
+  }
+}
+
+
+.nav-modal{
+  display:block;
+  position:fixed;
+  overflow: auto;
+  top:15px;
+  right:15px;
+  bottom:15px;
+  left:15px;
+
+  background-color: transparentize($white,0.0);
+  z-index: 1500;
+
+  &.ng-hide-remove{
+    animation:0.5s fadeIn ease;
+  }
+
+  &.ng-hide-add{
+    animation:0.5s fadeOut ease;
+  }
+
+  padding:40px 0;
+  font-size: 20px;
+  .title{
+    font-size: 1.5em;
+    color: $green;
+  }
+  box-shadow: 0 4px 8px 0 #333;
+
+  .x{
+    position: absolute;
+    top:20px;
+    right:25px;
+    color: darken($green, 10%);
+    height:30px;
+    width:30px;
+    border-radius: 15px;
+    padding: 0px 7px;
+    cursor: pointer;
+
+    &:hover{
+      background-color: #eee;
+    }
+  }
+}
+
+
+/* this should go to home.scss */
+.categories{
+
+  margin-top: 50px;
+  $category-height:150px;
+  .category{
+    display: block;
+    padding: 15px;
+  }
+  .content{
+    background: darken($green, 5%);
+    display: table;
+    height: $category-height;
+    padding: 10px;
+    border-radius: 10px;
+    border-top-left-radius: $category-height/2 + 1px;
+    border-bottom-left-radius: $category-height/2+ 1px;
+    width:100%;
+
+    &:hover{
+      background-color: darken($green,10%);
+    }
+  }
+  .img{
+    display: table-cell;
+    height: $category-height - 30px;
+    width: $category-height - 30px;
+    padding: 5px 5px;
+    border-radius: ($category-height - 30px)/2 + 1px;
+    background-size: cover;
+    background-position: center;
+    //border: 1px solid #333;
+  }
+  .category-title{
+    display: table-cell;
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+    padding: 5px;
+    font-size: 1.2em;
+    color:$white;
+  }
+}
+
+.search-modal{
+	margin: 25px 0px 15px;
+  display: block;
+
+  h2{
+    margin: 30px 0 15px;
+
+    font-size: 1.3em;
+    font-style: italic;
+  }
+
+}
+
+.product-as-item {
+    $prasit-h:110px;
+    $prasit-sm-h:90px;
+    height: $prasit-h;
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    position: relative;
+    display: table;
+
+    .img {
+      display: table-cell;
+      height: $prasit-h - 10px;
+      width: $prasit-h - 10px;
+      padding: 5px 5px;
+      border-radius: ($prasit-h - 9px)/2;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid #333;
+    }
+
+    .p-title{
+      display: table-cell;
+      text-align: left;
+      vertical-align: middle;
+      padding: 5px;
+      font-size: 1.1em;
+    }
+
+    &:hover{
+      //border-color: darken(#dee7ec,30%);
+      background-color: #dee7ec;
+    }
+
+    @media (max-width: 667px){
+  		height: $prasit-sm-h;
+      font-size: 16px;
+      .img{
+        height: $prasit-sm-h - 10px;
+        width: $prasit-sm-h - 10px;
+      }
+  	}
+
+}

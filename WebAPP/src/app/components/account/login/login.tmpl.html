@@ -1,0 +1,61 @@
+<div class="container">
+
+    <div class="register-panel col-md-6">
+
+      <form name="lForm" class="form-sue form-sue-g" ng-submit="login()" novalidate>
+        <div class="f-group">
+          <h1 translate="REG.LOGIN">Log In</h1>
+        </div>
+
+        <div class="f-group f-has-error">
+          <div class="f-hb" ng-repeat="err in errors">
+            {{err}}
+          </div>
+        </div>
+
+        <div class="f-group" ng-class="{'f-has-error':lForm.username.$invalid && lForm.username.$touched}">
+           <label for="rUsername" translate="REG.USERNAME">Username</label>
+           <input type="text" class="f-ctrl" id="rUsername"
+             name="username" ng-model="loginModel.username"
+             placeholder="{{'REG.USERNAME' | translate}}"
+             required>
+           <p class="f-hb" ng-if="lForm.username.$invalid && lForm.username.$touched">
+             <span ng-if="lForm.username.$error.required" translate="REG.REQUIRED">Required.</span>
+           </p>
+        </div>
+
+        <div class="f-group" ng-class="{'f-has-error':lForm.password.$invalid && lForm.password.$touched}">
+          <label for="rPassword" translate="REG.PASSWORD">Password</label>
+          <input type="password" class="f-ctrl" id="rPassword"
+            name="password" ng-model="loginModel.password" placeholder="Password" required>
+          <p class="f-hb" ng-if="lForm.password.$invalid && lForm.password.$touched">
+            <span ng-if="lForm.password.$error.required" translate="REG.REQUIRED">Required.</span>
+          </p>
+        </div>
+
+        <div class="f-group">
+          <button type="submit" class="f-btn pull-right" name="button">
+            <span translate="REG.LOGIN">Log in</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="register-panel col-md-6">
+      <div class="article">
+        <h1 translate="REG.LH">You don't have account yet?</h1>
+        <p translate="REG.LP">
+          Register to Euroaquaing and enjoy our services!
+        </p>
+
+        <div class="form-sue form-sue-g">
+          <div class="f-group">
+            <a ui-sref="register" class="f-btn f-btn-fill" translate="REG.LB">Register here</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+</div>

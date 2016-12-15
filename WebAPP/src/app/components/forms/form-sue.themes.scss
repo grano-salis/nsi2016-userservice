@@ -1,0 +1,16 @@
+/****************/
+/**** THEMES ****/
+/****************/
+
+
+.form-sue-aqua{
+  @include form-sue-theme(#009688, #ddd, #8bc34a, #e91e63, #ff5722)
+}
+
+.form-sue-g{
+  @include form-sue-theme(darken($green,10%), #eee, #8bc34a, #cc0707, #ff5722)
+}
+
+.form-sue-wg{
+  @include form-sue-theme($white, darken($green,10%), #8bc34a, darken(#e91e63,10%), #ff5722)
+}

@@ -1,0 +1,78 @@
+/**
+ *  If you want to override some bootstrap variables, you have to change values here.
+ *  The list of variables are listed here bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
+ */
+$navbar-inverse-link-color: #5AADBB;
+$icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
+
+$fa-font-path: "../../bower_components/font-awesome/fonts";
+@import "../../bower_components/font-awesome/scss/font-awesome.scss";
+/**
+ *  Do not remove the comments below. It's the markers used by wiredep to inject
+ *  sass dependencies when defined in the bower.json of your dependencies
+ */
+// bower:scss
+// endbower
+
+
+.thumbnail {
+  height: 200px;
+
+  img.pull-right {
+    width: 50px;
+  }
+}
+
+$green: #86b300;
+$lightgray: #f2f2f2;
+$white: #ffffff;
+$dirtywhite: #f2ffe6;
+$lightgreen: #d9f2d9;
+$darkblue: #003d4d;
+$darkgreen: #133a13;
+
+$motoBg: rgba(255, 255, 255, 0.58);
+$darkBg: rgba(19, 58, 19, 0.52);
+
+$text-color: #333333;
+
+$facebook: #3b5998;
+$twitter: #3cf;
+$google: #e36044;
+
+body{
+  background-color: darken($green,10%);
+}
+#main-view{
+  background-color: $white;
+  width:100%;
+  height: auto;
+}
+
+.container-c {
+  width:100%;
+  max-width: 1500px;
+  padding: 0 20px;
+  margin-left: auto;
+  margin-right: auto;
+  @media(max-width: 1440px){
+    max-width: 1366px;
+	}
+
+
+	@media(max-width: 1366px){
+    max-width: 1170px;
+	}
+
+
+	@media(max-width: 1170px){
+    max-width: 998px
+	}
+
+}
+/**
+ *  Do not remove the comments below. It's the markers used by gulp-inject to inject
+ *  all your sass files automatically
+ */
+// injector
+// endinjector

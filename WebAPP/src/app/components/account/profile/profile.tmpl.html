@@ -1,0 +1,51 @@
+<div class="container profile">
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+
+      <h2 translate="REG.PH">Your profile</h2>
+      <div class="form-sue form-sue-g">
+        <div class="f-group">
+          <label translate="REG.USERNAME">Username</label>
+          <p class="f-hb">{{user.username}}</p>
+        </div>
+
+        <div class="f-group">
+          <label translate="REG.EMAIL">E-mail</label>
+          <p class="f-hb">{{user.email}}</p>
+        </div>
+
+        <div class="f-group" ng-hide="hideLogout">
+          <button class="f-btn f-btn-fill pull-right" ng-click="logout()"
+            translate="REG.LOGOUT">Log out</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+      <h2 translate="ORD.YOURORDERS">Your orders</h2>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th translate="ORD.YOURORDERS">Date and time</th>
+              <th translate="ORD.DATETIME">Status</th>
+              <th translate="ORD.VALUE">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="o in orders track by $index" ui-sref="order({id:o._id})">
+              <td>{{o.date | date:'dd.MM.yyyy. HH.mm'}}</td>
+              <td>{{ 'ORD.STATS.' + o.status | translate}}</td>
+              <td>{{getTotal(o)}} €</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

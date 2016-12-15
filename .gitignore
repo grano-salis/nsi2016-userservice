@@ -4,3 +4,7 @@ SSO/SSO.WCFService/SSO.WCFService/obj/
 SSO/SSO.WCFService/packages
 **/bin/
 **/obj/
+
+WebAPP/.tmp
+WebAPP/node_modules
+WebAPP/bower_components

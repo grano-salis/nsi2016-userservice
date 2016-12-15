@@ -1,0 +1,87 @@
+<div class="container">
+
+    <div class="register-panel col-md-6">
+      <article class="article">
+        <h1 translate="REG.RH1">Register to Euroaquaing and enjoy our services!</h1>
+        <p translate="REG.RP1">
+          By joining our user comunity, You will be able to order our products and easily follow the status of your order in a user-friendly environment that we provided for you!
+        </p>
+      </article>
+
+      <article class="article">
+        <h1 translate="REG.RH2">Already have an account?</h1>
+        <p>
+          <span translate="REG.RP21">You can login</span> <a ui-sref="login" translate="REG.RP22">here</a>.
+        </p>
+      </article>
+
+    </div>
+    <div class="register-panel col-md-6">
+
+      <form name="rForm" class="form-sue form-sue-g" ng-submit="register()" novalidate>
+        <div class="f-group">
+          <h2>Want to create account?</h2>
+          <h1>Register here</h1>
+        </div>
+
+        <div class="f-group f-has-error">
+          <div class="f-hb" ng-repeat="err in errors">
+            {{err}}
+          </div>
+        </div>
+
+        <div class="f-group" ng-class="{'f-has-error':rForm.username.$invalid && rForm.username.$touched}">
+           <label for="rUsername" translate="REG.USERNAME">Username</label>
+           <input type="text" class="f-ctrl" id="rUsername"
+             name="username" ng-model="newUser.username" placeholder="{{'REG.USERNAME' | translate}}"
+             required>
+           <p class="f-hb" ng-if="rForm.username.$invalid && rForm.username.$touched">
+             <span ng-if="rForm.username.$error.required" translate="REG.REQUIRED">Required.</span>
+           </p>
+        </div>
+
+        <div class="f-group" ng-class="{'f-has-error':rForm.email.$invalid && rForm.email.$touched}">
+           <label for="rEmail" translate="REG.EMAIL">Email</label>
+           <input type="email" class="f-ctrl" id="rEmail"
+             name="email" ng-model="newUser.email"  placeholder="{{'REG.EMAIL' | translate}}" required>
+           <p class="f-hb" ng-if="rForm.email.$invalid && rForm.email.$touched">
+             <span ng-if="rForm.email.$error.required" translate="REG.REQUIRED">Required.</span>
+             <span ng-if="rForm.email.$error.email" translate="REG.EMAIL_NOT_WALID">Email doesn't have valid format.</span>
+           </p>
+        </div>
+
+        <div class="f-group" ng-class="{'f-has-error':rForm.password.$invalid && rForm.password.$touched}">
+          <label for="rPassword" translate="REG.PASSWORD">Password</label>
+          <input type="password" class="f-ctrl" id="rPassword"
+            name="password" ng-model="newUser.password" placeholder="{{'REG.PASSWORD' | translate}}"
+            required ng-minlength="8">
+          <p class="f-hb" ng-if="rForm.password.$invalid && rForm.password.$touched">
+            <span ng-if="rForm.password.$error.required" translate="REG.REQUIRED">Required.</span>
+            <span ng-if="rForm.password.$error.minlength" translate="REG.PASS_SHORT">
+              Password need to have at least 8 chars.
+            </span>
+          </p>
+        </div>
+
+        <div class="f-group" ng-class="{'f-has-error':rForm.confirmPassword.$invalid && rForm.confirmPassword.$touched}">
+          <label for="rConfirmPassword" translate="REG.RPASSWORD">Confirm password</label>
+          <input type="password" class="f-ctrl" id="rConfirmPassword"
+            name="confirmPassword" placeholder="{{'REG.RPASSWORD' | translate}}"
+            required ng-model="newUser.confirmPassword" confirm-password="newUser.password">
+          <p class="f-hb" ng-if="rForm.confirmPassword.$invalid && rForm.confirmPassword.$touched">
+            <span ng-if="rForm.confirmPassword.$error.required" translate="REG.REQUIRED">Required.</span>
+            <span ng-if="rForm.confirmPassword.$error.confirm" translate="REG.PASS_NOT_SAME">Passwords are not same.</span>
+          </p>
+        </div>
+
+        <div class="f-group">
+          <button type="submit" class="f-btn pull-right" name="button"><!--
+          --><span translate="REG.REGISTER">Register</span> <img class="spinner" src="/assets/spinners/ring.svg" alt="waiting..." ng-show="showSpin"><!--
+        --></button>
+
+        </div>
+
+      </form>
+
+  </div> <!-- END of .right-panel -->
+</div>

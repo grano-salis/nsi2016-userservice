@@ -1,0 +1,9 @@
+<div class="nav-modal-backdrop" ng-show="show" ng-click="show=false" ></div>
+
+<div class="nav-modal" ng-show="show">
+  <div class="container">
+    <div class="x" ng-click="show=false"><span class="fa fa-close"></span></div>
+    <div class="title" ng-transclude="title"></div>
+    <div class="body" ng-transclude="body"></div>
+  </div>
+</div>

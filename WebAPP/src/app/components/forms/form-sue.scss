@@ -1,0 +1,133 @@
+
+$normal-color: #333;
+$danger-color: red;
+$success-color: green;
+$warning-color: orange;
+
+$form-sue-font-size: 1em;
+
+.form-sue{
+  @extend .container-fluid;
+
+  input, textarea{
+    font-size: 1.3em !important;
+  }
+
+  font-size:$form-sue-font-size;
+
+  .f-group{
+    @extend .row;
+    padding: 10px 0;
+  }
+
+  .f-ctrl{
+    display: inline-block;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    padding: 6px 0px;
+    border-bottom: solid 1px $normal-color;
+    font-weight: lighter;
+
+    &:focus{
+      outline: none;
+    }
+
+    &:-webkit-autofill {
+      background-color: white !important;
+      -webkit-box-shadow: 0 0 0 1000px white inset !important;
+      color: white !important;
+    }
+  }
+
+  .f-btn {
+    display: inline-block;
+    padding: 16px 30px;
+    color:$normal-color;
+    border:1px solid $normal-color;
+    background-color: transparent;
+    font-size:1.3em;
+
+    -webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
+    text-align: center;
+    cursor: pointer;
+
+    &:focus{
+      outline:0;
+    }
+
+    &:hover{
+      background-color: $normal-color;
+      color:white;
+    }
+  }
+
+  .f-btn-fill{
+    border:0;
+    background-color: $normal-color;
+    color:#eee;
+  }
+
+  .f-btn-block{
+    display: block;
+    width:100%;
+  }
+
+  .f-hb{
+    display: block;
+    margin-top:3px;
+    margin-bottom: 0px;
+  }
+}
+
+@mixin form-sue-theme-color($color, $n-color){
+
+  color:$color;
+
+  label { color:$color; }
+
+  .f-ctrl { border-color: $color; }
+
+  .f-btn {
+    color:$color;
+    border-color: $color;
+
+    &:hover{
+      background-color: $color;
+      color:$n-color;
+    }
+  }
+
+  .f-btn-fill{
+    background-color: $color;
+    color:$n-color;
+
+
+    @if lightness($color) > 50% {
+      &:hover{
+        background-color: lighten($color,10%);
+      }
+    }
+    @else {
+      &:hover{
+        background-color: darken($color,10%);
+      }
+    }
+
+  }
+
+  .f-hb{ color:$color; }
+}
+
+@mixin form-sue-theme($normal-color, $neutral-color, $success-color, $error-color, $warning-color){
+
+  /* elements without success, error or warning has $normal-color */
+  @include form-sue-theme-color($normal-color, $neutral-color);
+
+  .f-has-success { @include form-sue-theme-color($success-color, $neutral-color); }
+
+  .f-has-error { @include form-sue-theme-color($error-color, $neutral-color); }
+
+  .f-has-warning{ @include form-sue-theme-color($warning-color, $neutral-color); }
+}

@@ -1,0 +1,18 @@
+<!-- Menu for mobile phones and tablets -->
+
+<div class="navbar-mob">
+		<a class="brand" ui-sref="home">NSI '16</a>
+		<div class="icon" ng-click="showMenu = ! showMenu"><i class="fa fa-list"></i></div>
+
+</div>
+<!-- Mob nav drop -->
+<!-- uib-collapse je dodan zboga animacije umjesto ng-show -->
+<div class="mob-drop" ng-show="showMenu">
+		<div class="x-btn fa fa-times" ng-click="showMenu = false"></div>
+		<ul ng-click="showMenu = false">
+			<li><a ui-sref="home" translate="NAV.HOME">Home</a></li>
+			
+			<li><a ng-if="!isLoggedIn()" ui-sref="login" translate="REG.LOGIN">Login</a><!--
+			--><a ng-if="isLoggedIn()" ui-sref="profile">{{getCurrentUser().username}} <span class="fa fa-user"></span></a></li>
+		</ul>
+</div>
