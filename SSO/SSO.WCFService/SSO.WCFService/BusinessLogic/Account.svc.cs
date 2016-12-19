@@ -54,8 +54,13 @@ namespace SSO.WCFService.BusinessLogic
             try
             {
                 var claim = _mngr.Login(loginModel);
-                var cookie = String.Format("sid={0}; Domain={1}; Path=/; HttpOnly", claim.Token, "localhost");
-                _ctx.OutgoingResponse.Headers.Add("Set-Cookie", cookie);
+                HttpCookie cookie = new HttpCookie("sid", claim.Token);
+                cookie.Domain = "localhost";
+                cookie.Path = "/";
+                cookie.HttpOnly = true;
+                // cookie expiration
+                cookie.Expires = DateTime.Now.Add(new TimeSpan(24, 0, 0));
+                HttpContext.Current.Response.SetCookie(cookie);
 
                 return new ActionResult
                 {
@@ -100,6 +105,12 @@ namespace SSO.WCFService.BusinessLogic
         {
             try
             {
+                var cookie = HttpContext.Current.Request.Cookies["sid"];
+                if(cookie == null)
+                {
+                    throw new WrongOrExpiredToken();
+                }
+
                 string token = HttpContext.Current.Request.Cookies["sid"].Value;
 
                 if (String.IsNullOrWhiteSpace(token))
@@ -108,6 +119,22 @@ namespace SSO.WCFService.BusinessLogic
                 }
 
                 return _identityMngr.Auth(token);
+            }
+            catch (WrongOrExpiredToken e)
+            {
+                // unset cookie
+                var current = HttpContext.Current.Request.Cookies["sid"];
+                if(current != null)
+                {
+                    HttpContext.Current.Response.Cookies.Remove("sid");
+                    current.Value = null;
+                    current.Expires = DateTime.Now.AddDays(-10);
+                    current.HttpOnly = true;
+                    HttpContext.Current.Response.SetCookie(current);
+                }
+
+                var myf = new MyFault { Details = e.Message };
+                throw new WebFaultException<MyFault>(myf, e.StatusCode);
             }
             catch (SSOBaseException e)
             {
@@ -120,6 +147,83 @@ namespace SSO.WCFService.BusinessLogic
                 throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
             }
 
+        }
+
+
+        public ActionResult Logout()
+        {
+            try
+            { 
+
+                var cookie = HttpContext.Current.Request.Cookies["sid"];
+                if (cookie == null)
+                {
+                    return new ActionResult()
+                    {
+                        Message = "Logout succesful"
+                    };
+                }
+
+                string token = HttpContext.Current.Request.Cookies["sid"].Value;
+                if (String.IsNullOrWhiteSpace(token))
+                {
+                    throw new WrongOrExpiredToken();
+                }
+
+                _identityMngr.Logout(token);
+
+                
+                if (cookie != null)
+                {
+                    HttpContext.Current.Response.Cookies.Remove("sid");
+                    cookie.Value = null;
+                    cookie.Expires = DateTime.Now.AddDays(-10);
+                    cookie.HttpOnly = true;
+                    HttpContext.Current.Response.SetCookie(cookie);
+                }
+
+                return new ActionResult()
+                {
+                    Message = "Logout succesful"
+                };
+            }
+            catch (WrongOrExpiredToken e)
+            {
+                // unset cookie
+                var current = HttpContext.Current.Request.Cookies["sid"];
+                if (current != null)
+                {
+                    HttpContext.Current.Response.Cookies.Remove("sid");
+                    current.Value = null;
+                    current.Expires = DateTime.Now.AddDays(-10);
+                    current.HttpOnly = true;
+                    HttpContext.Current.Response.SetCookie(current);
+                }
+
+                var myf = new MyFault { Details = e.Message };
+                throw new WebFaultException<MyFault>(myf, e.StatusCode);
+            }
+            catch (SSOBaseException e)
+            {
+                var myf = new MyFault { Details = e.Message };
+                throw new WebFaultException<MyFault>(myf, e.StatusCode);
+            }
+            catch (Exception e)
+            {
+                var myf = new MyFault { Details = "There has been an error in authorization process." };
+                throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
+            }
+
+        }
+
+        public void GetOptions()
+        {
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "POST, PUT, DELETE, OPTIONS");
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+            HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
+
+            HttpContext.Current.Response.End();
         }
     }
 }

@@ -20,28 +20,38 @@ function accountService($http, serverName, $q){
               url: serverName + '/BusinessLogic/Account.svc/json/login',
               method: "POST",
               data: {
-                  loginModel: loginModel
-              }
+                  loginModel: {
+                      "Username": loginModel.username,
+                      "Password": loginModel.password
+                  }
+              },
+              withCredentials:true
           }).then(function (response) {
                
                service.auth().then(function(response){
                    deferred.resolve();
                })
                .catch(function(resp){
-                   deferred.reject();
+                   deferred.reject('auth');
                })
             
           }).catch(function (response) {
-              
+             if(response == 'auth')
+                return deferred.reject(response);
+                
+             if(response.status == 400)
+                return deferred.reject('wrong credentials');
+             
+             deferred.reject('login') 
           });
 
           return deferred.promise;
       };
 
       this.auth = function(){
-          return $http.get(serverName + '/BusinessLogic/Account.svc/json/auth')
+          return $http.get(serverName + '/BusinessLogic/Account.svc/json/auth',{withCredentials:true})
           .then(function(response){
-              var data = response.data.d;
+              var data = response.data;
               var user = {
                   username: data.Username,
                   name: data.FirstName + " " + data.LastName,
@@ -61,7 +71,14 @@ function accountService($http, serverName, $q){
 
       this.logout = function () {
           // TODO call api
-          setCurrentUser({user:null});
+          return $http({
+              url: serverName + '/BusinessLogic/Account.svc/json/logout',
+              method:"POST",
+              withCredentials:true
+          })
+          .then(function(response){
+              setCurrentUser({user: null});  
+          });
       };
       
       /*
@@ -90,7 +107,7 @@ function accountService($http, serverName, $q){
       this.isLoggedIn = function(){
           var c_user = this.getCurrentUser();
 
-          return !!c_user && !!c_user.token;
+          return !!c_user && !!c_user.user;
       };
       this.isAdmin = function(){
         var user = this.getCurrentUser().user;

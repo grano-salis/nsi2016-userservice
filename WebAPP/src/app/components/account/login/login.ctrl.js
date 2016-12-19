@@ -40,33 +40,15 @@
           $scope.succefullLogin();
         })
         .catch(function(response){
-
-          if(response.data.username){
-            if(response.data.username == "wrong"){
-              $scope.errors.push($translate.instant('REG.USER_PASS_W'));
+            if(response=='login'){
+                toastr.error('Failed to login.');
             }
-            if(response.data.username == "required"){
-              $scope.errors.push("Username is required.");
+            else if(response == 'auth'){
+                toastr.error('Please refresh page. Failed to fetch user data.');
             }
-          }
-          if(response.data.password){
-            if(response.data.username == "required"){
-              $scope.errors.push("Username is required.");
+            else if(response == 'wrong credentials'){
+                toastr.error("Wrong username or password.");
             }
-          }
-          if(response.data.email){
-            if(response.data.email == "not confirmed"){
-              $scope.errors.push($translate.instant('REG.EMAIL_NOT_CONF'));
-            }
-          }
-          if(response.data.banned){
-            $scope.errors.push($translate.instant('REG.BAN'));
-          }
-          if($scope.errors.length > 0)
-            toastr.error($scope.errors.join(' '), $translate.instant('REG.LOG_FAIL'));
-          else
-            toastr.error($translate.instant('REG.LOG_FAIL'));
-
       });
 
     };

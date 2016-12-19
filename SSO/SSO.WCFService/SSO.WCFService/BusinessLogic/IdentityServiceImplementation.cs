@@ -21,8 +21,18 @@ namespace SSO.WCFService.BusinessLogic
             if (claim == null)
             {
                 // or return false
-                throw new Exceptions.WrongCredentialsException();
+                throw new Exceptions.WrongOrExpiredToken();
             }
+
+            // Check expiration
+            var timeSpan = DateTime.Now.Subtract(claim.Created);
+            if(timeSpan.TotalSeconds > 60 * 60 * 24) // 24h
+            {
+                claim.Valid = "0";
+                _db.SaveChanges();
+                throw new Exceptions.WrongOrExpiredToken();
+            }
+
 
             var user = _db.Users.Where(u => u.ID == claim.UserID).ToList()
                                     .Select(u => new {
@@ -56,7 +66,13 @@ namespace SSO.WCFService.BusinessLogic
 
         public void Logout(string token)
         {
-            throw new NotImplementedException();
+            var claim = _db.Claims
+                .SingleOrDefault(c => c.Valid.Equals("1") && c.Token.Equals(token));
+            if (claim != null)
+            {
+                claim.Valid = "0";
+                _db.SaveChanges();
+            }
         }
     }
 }

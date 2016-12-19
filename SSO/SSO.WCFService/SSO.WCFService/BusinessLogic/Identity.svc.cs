@@ -51,7 +51,7 @@ namespace SSO.WCFService.BusinessLogic
 
         public void Logout(string token)
         {
-            throw new NotImplementedException();
+            _mngr.Logout(token);
         }
     }
 }
