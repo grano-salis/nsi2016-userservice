@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.ServiceModel.Web;
 using SSO.WCFService.Exceptions;
 using System.Net;
+using SSO.WCFService.Helpers;
 
 namespace SSO.WCFService.BusinessLogic
 {
@@ -18,33 +19,6 @@ namespace SSO.WCFService.BusinessLogic
         public AccountServiceImplementation(SSOContext _db)
         {
             this._db = _db;
-        }
-
-        public ActionResult ChangePassword(User user)
-        {
-            /*
-               SSOContext _db = new SSOContext();
-               UserLuka l = new UserLuka();
-               l.NAME = "luka lol";
-
-               _db.UserLukas.Add(l);
-               _db.SaveChanges();
-           */
-            // Succeful login
-            // Make token
-            var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
-            byte[] tokenB = new byte[40];
-            rng.GetBytes(tokenB);
-
-            //Convert to hex
-            String tokenHex = BitConverter.ToString(tokenB).Replace("-", String.Empty);
-            Claim claim = new Claim();
-            claim.Token = tokenHex;
-            claim.Valid = "1";
-            claim.Created = DateTime.Now;
-            claim.User = user;
-
-            throw new SSOBaseException("This method is currently not implemented.", System.Net.HttpStatusCode.NotImplemented);
         }
 
         public Claim Login(LoginRequest loginModel)
@@ -61,15 +35,7 @@ namespace SSO.WCFService.BusinessLogic
                 throw new WrongCredentialsException();
             }
 
-            byte[] saltB = Convert.FromBase64String(user.Salt);
-
-            byte[] passwordB = System.Text.Encoding.UTF8.GetBytes(loginModel.Password);
-            var hashAlgorithm = new System.Security.Cryptography.SHA256Cng();
-            byte[] passwordHashB = hashAlgorithm.ComputeHash(passwordB.Concat(saltB).ToArray());
-            var passwordHashS = Convert.ToBase64String(passwordHashB);
-
-            // TODO change database password field to nvarchar
-            // 44 is length of
+            var passwordHashS = CryptoHelper.generateHash(user.Salt, loginModel.Password);
             if (!passwordHashS.Equals(user.Password.Substring(0, 44)))
             {
                 throw new WrongCredentialsException();
@@ -101,7 +67,7 @@ namespace SSO.WCFService.BusinessLogic
             if (registerModel == null)
                     throw new ArgumentNullException();
             //TODO check model validation and throw ModelValidatoinException if neede
-            if (!checkPassword(registerModel.Password))
+            if (!CryptoHelper.checkPassword(registerModel.Password))
             {
                 throw new WeakPasswordException();
             }
@@ -116,24 +82,13 @@ namespace SSO.WCFService.BusinessLogic
                 throw new EmailExistsException(registerModel.Email);
             }
 
-            // Make salt
-            var rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
-            // Salt should be long at least as hash algorith output. Sha256 output iz 32 bytes long.
-            byte[] saltB = new byte[32];
-            rng.GetBytes(saltB);
-            var saltS = Convert.ToBase64String(saltB);
-
-            // Make hash with salt
-            byte[] passwordB = System.Text.Encoding.UTF8.GetBytes(registerModel.Password);
-            var hashAlgorithm = new System.Security.Cryptography.SHA256Cng();
-            byte[] passwordHashB = hashAlgorithm.ComputeHash(passwordB.Concat(saltB).ToArray());
-            var passwordHashS = Convert.ToBase64String(passwordHashB);
+            string freshSalt = CryptoHelper.generateSalt();
 
             // Make new user
             User newUser = new User();
             newUser.Username = registerModel.Username;
-            newUser.Salt = saltS;
-            newUser.Password = passwordHashS;
+            newUser.Salt = freshSalt;
+            newUser.Password = CryptoHelper.generateHash(freshSalt, registerModel.Password);
 
             UserInfo info = new UserInfo();
             info.Email = registerModel.Email;
@@ -155,38 +110,6 @@ namespace SSO.WCFService.BusinessLogic
             //bla bla nesto neovisno od t
             await t;
             return new ActionResult { Message = m };
-        }
-
-        private bool checkPassword(string password)
-        {
-            if (password.Length < 8)
-            {
-                return false;
-            }
-
-            Boolean haveLowercase = false;
-            Boolean haveUppercase = false;
-            Boolean haveDigit = false;
-
-            foreach (char letter in password)
-            {
-                if (Char.IsLower(letter))
-                {
-                    haveLowercase = true;
-                }
-                else if (Char.IsUpper(letter))
-                {
-                    haveUppercase = true;
-                }
-                else if (Char.IsDigit(letter))
-                {
-                    haveDigit = true;
-                }
-
-            }
-
-            // Password is strong enought if it have at least one lowecare, uppercase letter 
-            return haveLowercase && haveUppercase;
         }
 
     }

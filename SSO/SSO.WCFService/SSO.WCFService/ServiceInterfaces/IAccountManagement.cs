@@ -1,28 +1,29 @@
-﻿using System;
+﻿using SSO.WCFService.DataContracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SSO.WCFService.ServiceInterfaces
+namespace SSO.WCFService.BusinessLogic
 {
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IAccountManagement" in both code and config file together.
     [ServiceContract]
-    interface IAccountManagement
+    public interface IAccountManagement
     {
-        //these operations are authorized and only user with ADMIN role can execute them
-        //TODO change inputs - make DATA contracts instead
         [OperationContract]
-        Boolean AddRole(string roleId, string userId); //add new role to a user, TODO: change input and output parameters 
+        ActionResult AddRole(string roleId, string userId); //add new role to a user, TODO: change input and output parameters 
 
         [OperationContract]
-        Boolean RemoveRole(string roleId, string userId); //remove role from a user, TODO: change input and output parameters
+        ActionResult RemoveRole(string roleId, string userId); //remove role from a user, TODO: change input and output parameters
 
         [OperationContract]
-        Boolean BanUser(string userId); //TODO: change input and output parameters
+        ActionResult BanUser(string userId); //TODO: change input and output parameters
 
         [OperationContract]
-        Boolean ChangePassword(string newPassword, string userId); //TODO: change input and output parameters
-
+        [WebInvoke(Method = "PUT", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        ActionResult ChangePassword(ChangePasswordRequest pwModel);
     }
 }

@@ -14,6 +14,37 @@ namespace SSO.WCFService.BusinessLogic
         {
             _db = db;
         }
+
+        protected internal bool IsSessionValid(string sid)
+        {
+            List<int> r = _db.Claims.Where(c => c.Token.Equals(sid))
+                .Where(c => c.Valid == "1")
+                .Select(c => c.ID)
+                .ToList();
+            return r.Count > 0;
+        }
+
+        protected internal bool IsCurrentSessionValid()
+        {
+            HttpCookie sid = HttpContext.Current.Request.Cookies.Get("sid");
+            if (sid == null)
+            {
+                return false;
+            }
+            return IsSessionValid(sid.Value);
+        }
+
+        protected internal bool IsAdmin()
+        {
+            if (IsCurrentSessionValid())
+            {
+                HttpCookie sid = HttpContext.Current.Request.Cookies.Get("sid");
+                AuthResponse currentUser = Auth(sid.Value);
+                return currentUser.Roles.Contains("ADMIN");
+            }
+            return false;
+        }
+
         public AuthResponse Auth(string token)
         {
             var claim = _db.Claims
