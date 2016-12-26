@@ -1,5 +1,6 @@
 ﻿using SSO.WCFService.DataContracts;
 using SSO.WCFService.Exceptions;
+using SSO.WCFService.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
