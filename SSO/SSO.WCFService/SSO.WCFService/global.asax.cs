@@ -22,7 +22,12 @@ namespace SSO.WCFService
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+            string port = HttpContext.Current.Request.Url.Port.ToString();
+            if (HttpContext.Current.Request.Url.Host.Equals("do.mac.ba"))
+            {
+                port = "88";
+            }
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "http://" + HttpContext.Current.Request.Url.Host + ":" + port);
             HttpContext.Current.Response.AddHeader("Access-Control-Allow-Credentials", "true");
 
             if (HttpContext.Current.Request.HttpMethod == "OPTIONS")

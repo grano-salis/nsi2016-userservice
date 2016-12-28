@@ -237,12 +237,12 @@ namespace SSO.WCFService.BusinessLogic
 
         public void GetOptions()
         {
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "POST, PUT, DELETE, OPTIONS");
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
-            HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "POST, PUT, DELETE, OPTIONS");
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+            //HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
 
-            HttpContext.Current.Response.End();
+            //HttpContext.Current.Response.End();
         }
     }
 }
