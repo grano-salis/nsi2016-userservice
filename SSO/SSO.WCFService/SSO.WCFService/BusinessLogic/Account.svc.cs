@@ -74,7 +74,12 @@ namespace SSO.WCFService.BusinessLogic
             {
                 var claim = _mngr.Login(loginModel);
                 HttpCookie cookie = new HttpCookie("sid", claim.Token);
-                cookie.Domain = HttpContext.Current.Request.Url.Host;
+                string domain = HttpContext.Current.Request.Url.Host;
+                if (HttpContext.Current.Request.Url.Host.Equals("do.mac.ba"))
+                {
+                    domain = ".mac.ba";
+                }
+                cookie.Domain = domain;
                 cookie.Path = "/";
                 cookie.HttpOnly = true;
                 // cookie expiration
