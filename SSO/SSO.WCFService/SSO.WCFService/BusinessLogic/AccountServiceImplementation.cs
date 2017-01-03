@@ -108,12 +108,12 @@ namespace SSO.WCFService.BusinessLogic
             if (_db.Users.SingleOrDefault(u => u.Username.Equals(registerModel.Username)) != null)
             {
                 // User with same username already exists
-                throw new UsernameExistsException(registerModel.Username);
+                throw new UsernameExistsException();
             }
             if (_db.UserInfoes.SingleOrDefault(u => u.Email.Equals(registerModel.Email)) != null)
             {
                 // User with same email already exists
-                throw new EmailExistsException(registerModel.Email);
+                throw new EmailExistsException();
             }
 
             // Make salt

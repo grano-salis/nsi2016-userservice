@@ -9,11 +9,11 @@ namespace SSO.WCFService.Exceptions
     public class UsernameExistsException : SSOBaseException
     {
 
-        public UsernameExistsException(string username) : base(String.Format("Username '{0}' already exists.", username), HttpStatusCode.BadRequest)
+        public UsernameExistsException() : base("username exists", HttpStatusCode.BadRequest)
         {
         }
 
-        public UsernameExistsException(string username, Exception innerException) : base(String.Format("Username '{0}' already exists.", username), innerException, HttpStatusCode.BadRequest)
+        public UsernameExistsException(Exception innerException) : base("username exists", innerException, HttpStatusCode.BadRequest)
         {
         }
     }
@@ -21,18 +21,18 @@ namespace SSO.WCFService.Exceptions
     public class EmailExistsException : SSOBaseException
     {
 
-        public EmailExistsException(string username) : base(String.Format("Email '{0}' already exists.", username), HttpStatusCode.BadRequest)
+        public EmailExistsException() : base("email exists", HttpStatusCode.BadRequest)
         {
         }
 
-        public EmailExistsException(string username, Exception innerException) : base(String.Format("Email '{0}' already exists.", username), innerException, HttpStatusCode.BadRequest)
+        public EmailExistsException(Exception innerException) : base("email exists", innerException, HttpStatusCode.BadRequest)
         {
         }
     }
 
     public class WeakPasswordException : SSOBaseException
     {
-        static private string _errorMessage = "Password weak.";
+        static private string _errorMessage = "password weak";
         public WeakPasswordException() : base(_errorMessage, HttpStatusCode.BadRequest)
         {
         }

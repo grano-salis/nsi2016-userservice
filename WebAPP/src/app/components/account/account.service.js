@@ -111,8 +111,15 @@ function accountService($http, serverName, $q){
       };
       this.isAdmin = function(){
         var user = this.getCurrentUser().user;
+        if(!user)
+            return false;
+            
+        for(var i in user.roles){
+            if(user.roles[i] == 'ADMIN')
+                return true;
+        }
         
-        return !(!user || !(user.role == 'admin'));
+        return false;
       }
       var setCurrentUser = function (loginModel) {
           //currentUser.token = loginModel.token;

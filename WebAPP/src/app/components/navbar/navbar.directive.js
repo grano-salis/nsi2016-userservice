@@ -33,6 +33,10 @@
     $scope.isLoggedIn = function(){
       return accountService.isLoggedIn();
     }
+    
+    $scope.isAdmin = function(){
+      return accountService.isAdmin();
+    }
 
     $scope.getCurrentUser = function(){
       return accountService.getCurrentUser().user;
