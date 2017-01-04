@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.ServiceModel.Web;
 using SSO.WCFService.Exceptions;
 using System.Net;
+using SSO.WCFService.Helpers;
 
 namespace SSO.WCFService.BusinessLogic
 {
@@ -18,6 +19,7 @@ namespace SSO.WCFService.BusinessLogic
         public AccountServiceImplementation(SSOContext _db)
         {
             this._db = _db;
+            var r = new CustomRoleProvider(_db);
         }
 
         public ActionResult ChangePassword(User user)

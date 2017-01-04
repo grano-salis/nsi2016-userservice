@@ -59,6 +59,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -80,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BusinessLogic\Account.svc" />
+    <Content Include="BusinessLogic\AccountManagement.svc" />
     <Content Include="BusinessLogic\Identity.svc" />
     <Content Include="global.asax" />
     <Content Include="Service1.svc" />
@@ -101,6 +103,10 @@
     <Compile Include="BusinessLogic\Account.svc.cs">
       <DependentUpon>Account.svc</DependentUpon>
     </Compile>
+    <Compile Include="BusinessLogic\AccountManagement.svc.cs">
+      <DependentUpon>AccountManagement.svc</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessLogic\AccountManagementImpl.cs" />
     <Compile Include="BusinessLogic\AccountServiceImplementation.cs" />
     <Compile Include="BusinessLogic\Identity.svc.cs">
       <DependentUpon>Identity.svc</DependentUpon>
@@ -120,6 +126,9 @@
     <Compile Include="global.asax.cs">
       <DependentUpon>global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CustomAuthorizationPolicy.cs" />
+    <Compile Include="Helpers\CustomClientCredentials.cs" />
+    <Compile Include="Helpers\CustomPrincipal.cs" />
     <Compile Include="Helpers\CustomRoleProvider.cs" />
     <Compile Include="Exceptions\WrongOrExpiredToken.cs" />
     <Compile Include="Log.cs">
