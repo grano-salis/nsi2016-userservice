@@ -126,11 +126,10 @@
     <Compile Include="global.asax.cs">
       <DependentUpon>global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\CustomAuthorizationPolicy.cs" />
-    <Compile Include="Helpers\CustomClientCredentials.cs" />
-    <Compile Include="Helpers\CustomPrincipal.cs" />
+    <Compile Include="Helpers\AuthProvider.cs" />
     <Compile Include="Helpers\CustomRoleProvider.cs" />
     <Compile Include="Exceptions\WrongOrExpiredToken.cs" />
+    <Compile Include="Helpers\UserInfoExtended.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
