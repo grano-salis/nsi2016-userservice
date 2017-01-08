@@ -11,6 +11,7 @@ namespace SSO.WCFService.BusinessLogic
     public class IdentityServiceImplementation
     {
         private SSOContext _db;
+        //something
         private AuthProvider _authProvider;
         public IdentityServiceImplementation(SSOContext db)
         {
