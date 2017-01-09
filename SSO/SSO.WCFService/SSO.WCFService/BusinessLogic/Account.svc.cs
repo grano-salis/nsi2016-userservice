@@ -1,5 +1,6 @@
 ﻿using SSO.WCFService.DataContracts;
 using SSO.WCFService.Exceptions;
+using SSO.WCFService.Helpers;
 using SSO.WCFService.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace SSO.WCFService.BusinessLogic
     {
         private AccountServiceImplementation _mngr { get; set; }
         private IdentityServiceImplementation _identityMngr { get; set; }
+        private AccountManagementServiceImplementation _accountMngr { get; set; }
         private SSOContext _db { get; set; }
         private WebOperationContext _ctx { get; set; }
 
@@ -27,15 +29,32 @@ namespace SSO.WCFService.BusinessLogic
             _ctx = WebOperationContext.Current;
             _mngr = new AccountServiceImplementation(_db);
             _identityMngr = new IdentityServiceImplementation(_db);
+            _accountMngr = new AccountManagementServiceImplementation(_db);
         }
 
-        public ActionResult ChangePassword()
+        public ActionResult ChangePassword(ChangePasswordRequest pwModel)
         {
             try
             {
-                // TODO get auth user
-                User user = null;
-                return _mngr.ChangePassword(user);
+                AuthResponse authUser = Auth();
+                // Is the user changing his own password
+                if (authUser.UserId != pwModel.ID)
+                {
+                    throw new SSOBaseException("Permission denied.", HttpStatusCode.Unauthorized);
+                }
+                // Is the new password strong enough
+                if (!CryptoHelper.checkPassword(pwModel.NewPassword))
+                {
+                    throw new WeakPasswordException();
+                }
+                User selectedUser = _db.Users.SingleOrDefault(u => u.ID == pwModel.ID);
+                var passwordHashS = CryptoHelper.generateHash(selectedUser.Salt, pwModel.OldPassword);
+                // Is the old password correct
+                if (!passwordHashS.Equals(selectedUser.Password.Substring(0, 44)))
+                {
+                    throw new WrongCredentialsException();
+                }
+                return _accountMngr.ChangePassword(pwModel);
             }
             catch (SSOBaseException e)
             {
@@ -45,7 +64,7 @@ namespace SSO.WCFService.BusinessLogic
             catch (Exception)
             {
                 _ctx.OutgoingResponse.StatusCode = HttpStatusCode.InternalServerError;
-                return new ActionResult { Message = "There has been an error while change password action." };
+                return new ActionResult { Message = "An error has occured while executing the change password action." };
             }
         }
 
@@ -55,7 +74,12 @@ namespace SSO.WCFService.BusinessLogic
             {
                 var claim = _mngr.Login(loginModel);
                 HttpCookie cookie = new HttpCookie("sid", claim.Token);
-                cookie.Domain = HttpContext.Current.Request.Url.Host;
+                string domain = HttpContext.Current.Request.Url.Host;
+                if (HttpContext.Current.Request.Url.Host.Contains(".mac.ba"))
+                {
+                    domain = ".mac.ba";
+                }
+                cookie.Domain = domain;
                 cookie.Path = "/";
                 cookie.HttpOnly = true;
                 // cookie expiration
@@ -218,12 +242,12 @@ namespace SSO.WCFService.BusinessLogic
 
         public void GetOptions()
         {
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "POST, PUT, DELETE, OPTIONS");
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
-            HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "POST, PUT, DELETE, OPTIONS");
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+            //HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
 
-            HttpContext.Current.Response.End();
+            //HttpContext.Current.Response.End();
         }
     }
 }

@@ -28,8 +28,6 @@ namespace SSO.WCFService.BusinessLogic
             _mngr = new IdentityServiceImplementation(_db);
         }
 
-        
-
         public AuthResponse Auth(string token)
         {
             try
