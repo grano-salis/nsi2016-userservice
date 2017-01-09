@@ -75,7 +75,7 @@ namespace SSO.WCFService.BusinessLogic
                 var claim = _mngr.Login(loginModel);
                 HttpCookie cookie = new HttpCookie("sid", claim.Token);
                 string domain = HttpContext.Current.Request.Url.Host;
-                if (HttpContext.Current.Request.Url.Host.Equals("do.mac.ba"))
+                if (HttpContext.Current.Request.Url.Host.Contains(".mac.ba"))
                 {
                     domain = ".mac.ba";
                 }

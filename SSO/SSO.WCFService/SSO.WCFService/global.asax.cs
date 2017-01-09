@@ -27,7 +27,20 @@ namespace SSO.WCFService
             {
                 port = "88";
             }
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "http://" + HttpContext.Current.Request.Url.Host + ":" + port);
+            if (HttpContext.Current.Request.UrlReferrer != null)
+            {
+                if (HttpContext.Current.Request.UrlReferrer.Port != 80)
+                {
+                    port = ":" + HttpContext.Current.Request.UrlReferrer.Port.ToString();
+                } else
+                {
+                    port = "";
+                }
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "http://" + HttpContext.Current.Request.UrlReferrer.Host + port);
+            } else
+            {
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "http://" + HttpContext.Current.Request.Url.Host + ":" + port);
+            }
             HttpContext.Current.Response.AddHeader("Access-Control-Allow-Credentials", "true");
 
             if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
