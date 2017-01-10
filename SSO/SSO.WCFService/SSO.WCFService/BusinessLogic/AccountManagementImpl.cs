@@ -52,18 +52,30 @@ namespace SSO.WCFService.BusinessLogic
 
         public getUsersResponse getUsers(string username)
         {
-            List<UserInfoExtended> userInfos = _db.Users.Where(u => u.Username.Contains(username)).ToList().Select(u => new UserInfoExtended
+            try
             {
-                UserId = u.ID,
-                Username = u.Username,
-                Info = u.UserInfo.FirstOrDefault(),
-                Roles = _db.ManageRoles.Include("Role")
-                                                    .Where(mr => mr.UserID == u.ID)
-                                                    .Select(mr => mr.Role.Name).ToList()
-            }).ToList();
-            return new getUsersResponse {
-                users = userInfos
-            };
+
+                List<UserInfoVM> userInfos = _db.Users.Where(u => u.Username.Contains(username)).ToList().Select(u => new UserInfoVM
+                {
+                    UserId = u.ID,
+                    Username = u.Username,
+                    Email = u.UserInfo.FirstOrDefault().Email,
+                    FirstName = u.UserInfo.FirstOrDefault().FirstName,
+                    LastName = u.UserInfo.FirstOrDefault().LastName,
+                    Roles = _db.ManageRoles.Include("Role")
+                                                        .Where(mr => mr.UserID == u.ID)
+                                                        .Select(mr => mr.Role.Name).ToList()
+                }).ToList();
+                return new getUsersResponse
+                {
+                    users = userInfos
+                };
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
         internal List<string> getRoles()

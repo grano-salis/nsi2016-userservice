@@ -139,6 +139,7 @@
     <Compile Include="Exceptions\WrongOrExpiredToken.cs" />
     <Compile Include="Helpers\UserInfoExtended.cs" />
     <Compile Include="Helpers\CryptoHelper.cs" />
+    <Compile Include="Helpers\UserInfoVM.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>

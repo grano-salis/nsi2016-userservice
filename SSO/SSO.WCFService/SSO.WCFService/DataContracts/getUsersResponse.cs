@@ -11,6 +11,6 @@ namespace SSO.WCFService.DataContracts
     public class getUsersResponse
     {
         [DataMember]
-        public List<UserInfoExtended> users;
+        public List<UserInfoVM> users;
     }
 }

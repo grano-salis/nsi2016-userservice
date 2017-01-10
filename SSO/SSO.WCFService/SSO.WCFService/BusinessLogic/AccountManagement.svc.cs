@@ -206,7 +206,8 @@ namespace SSO.WCFService.BusinessLogic
                 if (!info.Roles.Contains("ADMIN"))
                     throw new UnauthorizedAccessException("User has to be admin to perform this action.");
 
-                return _mngr.getUsers(username);
+                var t =_mngr.getUsers(username);
+                return t;
             }
             catch (UnauthorizedAccessException e)
             {
@@ -218,7 +219,7 @@ namespace SSO.WCFService.BusinessLogic
                 var myf = new MyFault { Details = e.Message };
                 throw new WebFaultException<MyFault>(myf, e.StatusCode);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 var myf = new MyFault { Details = "There has been an error while getUsers action." };
                 throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
