@@ -14,16 +14,16 @@ namespace SSO.WCFService.ServiceInterfaces
     public interface IAccountManagement
     {
         [OperationContract]
-        ActionResult AddRole(string roleId, string userId); //add new role to a user, TODO: change input and output parameters 
+        ActionResult AddRole(RoleModelRequest rModel); //add new role to a user, TODO: change input and output parameters 
 
         [OperationContract]
-        ActionResult RemoveRole(string roleId, string userId); //remove role from a user, TODO: change input and output parameters
+        ActionResult RemoveRole(RoleModelRequest rModel); //remove role from a user, TODO: change input and output parameters
 
         [OperationContract]
         ActionResult BanUser(string userId); //TODO: change input and output parameters
 
         [OperationContract]
-        [WebInvoke(Method = "PUT", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         ActionResult ChangePassword(ChangePasswordRequest pwModel);
     }
 }

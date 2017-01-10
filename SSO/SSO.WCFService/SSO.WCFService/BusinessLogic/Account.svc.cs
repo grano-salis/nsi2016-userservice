@@ -19,7 +19,7 @@ namespace SSO.WCFService.BusinessLogic
     {
         private AccountServiceImplementation _mngr { get; set; }
         private IdentityServiceImplementation _identityMngr { get; set; }
-        private AccountManagementServiceImplementation _accountMngr { get; set; }
+        private AccountManagementImpl _accountMngr { get; set; }
         private SSOContext _db { get; set; }
         private WebOperationContext _ctx { get; set; }
 
@@ -29,7 +29,7 @@ namespace SSO.WCFService.BusinessLogic
             _ctx = WebOperationContext.Current;
             _mngr = new AccountServiceImplementation(_db);
             _identityMngr = new IdentityServiceImplementation(_db);
-            _accountMngr = new AccountManagementServiceImplementation(_db);
+            _accountMngr = new AccountManagementImpl(_db);
         }
 
         public ActionResult ChangePassword(ChangePasswordRequest pwModel)
@@ -75,7 +75,7 @@ namespace SSO.WCFService.BusinessLogic
                 var claim = _mngr.Login(loginModel);
                 HttpCookie cookie = new HttpCookie("sid", claim.Token);
                 string domain = HttpContext.Current.Request.Url.Host;
-                if (HttpContext.Current.Request.Url.Host.Contains(".mac.ba"))
+                if (HttpContext.Current.Request.Url.Host.Contains("mac.ba"))
                 {
                     domain = ".mac.ba";
                 }

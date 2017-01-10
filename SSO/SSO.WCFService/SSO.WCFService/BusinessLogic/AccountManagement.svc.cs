@@ -6,6 +6,9 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using SSO.WCFService.DataContracts;
+using SSO.WCFService.Exceptions;
+using System.Net;
 
 namespace SSO.WCFService.BusinessLogic
 {
@@ -14,6 +17,7 @@ namespace SSO.WCFService.BusinessLogic
     public class AccountManagement : IAccountManagement
     {
         private AccountManagementImpl _mngr { get; set; }
+        private IdentityServiceImplementation _identityMngr { get; set; }
         private SSOContext _db { get; set; }
         private WebOperationContext _ctx { get; set; }
 
@@ -22,28 +26,45 @@ namespace SSO.WCFService.BusinessLogic
             _db = new SSOContext();
             _ctx = WebOperationContext.Current;
             _mngr = new AccountManagementImpl(_db);
+            _identityMngr = new IdentityServiceImplementation(_db);
         }
 
-
-        public bool AddRole(string roleId, string userId)
+        public ActionResult AddRole(RoleModelRequest rModel)
         {
             throw new NotImplementedException();
         }
 
-        public bool BanUser(string userId)
+        public ActionResult RemoveRole(RoleModelRequest rMode)
         {
             throw new NotImplementedException();
         }
 
-        public bool ChangePassword(string newPassword, string userId)
+        public ActionResult BanUser(string userId)
         {
             throw new NotImplementedException();
         }
 
-
-        public bool RemoveRole(string roleId, string userId)
+        public ActionResult ChangePassword(ChangePasswordRequest pwModel)
         {
-            throw new NotImplementedException();
+            // @NOTE: @TODO: Ne upratih da li ima auth provider
+            try
+            {
+                if (!_identityMngr.IsAdmin())
+                {
+                    throw new SSOBaseException("Permission denied.", HttpStatusCode.Unauthorized);
+                }
+                return _mngr.ChangePassword(pwModel);
+            }
+            catch (SSOBaseException e)
+            {
+                _ctx.OutgoingResponse.StatusCode = e.StatusCode;
+                return new ActionResult { Message = e.Message };
+            }
+            catch (Exception)
+            {
+                _ctx.OutgoingResponse.StatusCode = HttpStatusCode.InternalServerError;
+                return new ActionResult { Message = "An error has occured while executing the change password action." };
+            }
         }
     }
 }
