@@ -55,7 +55,7 @@ namespace SSO.WCFService.BusinessLogic
             {
                 var claim = _mngr.Login(loginModel);
                 HttpCookie cookie = new HttpCookie("sid", claim.Token);
-                cookie.Domain = "localhost";
+                cookie.Domain = HttpContext.Current.Request.Url.Host;
                 cookie.Path = "/";
                 cookie.HttpOnly = true;
                 // cookie expiration
