@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SSO.WCFService.ServiceInterfaces
 {
     [ServiceContract]
-    interface IAccountManagement
+    public interface IAccountManagement
     {
         //these operations are authorized and only user with ADMIN role can execute them
         //TODO change inputs - make DATA contracts instead
@@ -41,7 +41,7 @@ namespace SSO.WCFService.ServiceInterfaces
         [OperationContract]
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [FaultContract(typeof(MyFault))]
-        Boolean ChangePassword(ChangePasswordRequest req); //TODO: change input and output parameters
+        ActionResult ChangePassword(ChangePasswordRequest pwModel); //TODO: change input and output parameters
 
     }
 }

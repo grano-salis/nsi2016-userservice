@@ -9,9 +9,20 @@ namespace SSO.WCFService.DataContracts
     [DataContract]
     public class ChangePasswordRequest
     {
-        [DataMember]
-        public string newPassword;
-        [DataMember]
-        public int userId;
+        // UID for the User whose password should be changed.
+        [DataMember(IsRequired = true)]
+         //[Required(ErrorMessage = "ID is required.")]
+         public Int32 ID { get; set; }
+ 
+         [DataMember(IsRequired = true)]
+         //[Required(ErrorMessage = "Password is required.")]
+         //[StringLength(16, MinimumLength = 8, ErrorMessage = "Password length should be between 10 and 100.")]
+         public string OldPassword { get; set; }
+ 
+         [DataMember(IsRequired = true)]
+         //[Required(ErrorMessage = "Password is required.")]
+         //[StringLength(16, MinimumLength = 8, ErrorMessage = "Password length should be between 10 and 100.")]
+         public string NewPassword { get; set; }
+     
     }
 }

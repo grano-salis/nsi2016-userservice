@@ -20,6 +20,8 @@ namespace SSO.WCFService.BusinessLogic
         private AccountServiceImplementation _mngr { get; set; }
         private IdentityServiceImplementation _identityMngr { get; set; }
         private AccountManagementImpl _accountMngr { get; set; }
+        private AccountManagementServiceImplementation _accountMngr2 { get; set; }
+
         private SSOContext _db { get; set; }
         private WebOperationContext _ctx { get; set; }
 
@@ -30,6 +32,7 @@ namespace SSO.WCFService.BusinessLogic
             _mngr = new AccountServiceImplementation(_db);
             _identityMngr = new IdentityServiceImplementation(_db);
             _accountMngr = new AccountManagementImpl(_db);
+            _accountMngr2 = new AccountManagementServiceImplementation(_db);
         }
 
         public ActionResult ChangePassword(ChangePasswordRequest pwModel)

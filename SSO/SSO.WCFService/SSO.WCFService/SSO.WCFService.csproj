@@ -107,6 +107,7 @@
       <DependentUpon>AccountManagement.svc</DependentUpon>
     </Compile>
     <Compile Include="BusinessLogic\AccountManagementImpl.cs" />
+    <Compile Include="BusinessLogic\AccountManagementServiceImplementation.cs" />
     <Compile Include="BusinessLogic\AccountServiceImplementation.cs" />
     <Compile Include="BusinessLogic\Identity.svc.cs">
       <DependentUpon>Identity.svc</DependentUpon>
@@ -137,6 +138,7 @@
     <Compile Include="Helpers\CustomRoleProvider.cs" />
     <Compile Include="Exceptions\WrongOrExpiredToken.cs" />
     <Compile Include="Helpers\UserInfoExtended.cs" />
+    <Compile Include="Helpers\CryptoHelper.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>SSOModel.tt</DependentUpon>
     </Compile>
