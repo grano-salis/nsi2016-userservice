@@ -29,9 +29,20 @@ namespace SSO.WCFService.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public bool ChangePassword(string newPassword, string userId)
+        public ActionResult ChangePassword(ChangePasswordRequest pwModel)
         {
-            throw new NotImplementedException();
+            var selectedUser = _db.Users.SingleOrDefault(u => u.ID == pwModel.ID);
+            if (selectedUser == null)
+            {
+                throw new SSOBaseException("User resource doesn't exist.", System.Net.HttpStatusCode.NoContent);
+            }
+
+            string freshSalt = CryptoHelper.generateSalt();
+            selectedUser.Salt = freshSalt;
+            selectedUser.Password = CryptoHelper.generateHash(freshSalt, pwModel.NewPassword);
+
+            _db.SaveChanges();
+            return new ActionResult { Message = "Password successfully changed." };
         }
 
         public void RemoveUserFromRole(int roleId, int userId)
