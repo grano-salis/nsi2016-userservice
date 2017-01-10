@@ -37,7 +37,7 @@ namespace SSO.WCFService.BusinessLogic
         {
             try
             {
-                int roleId = req.roleId;
+                string roleName = req.roleName;
                 int userId = req.userId;
 
                 var cookie = HttpContext.Current.Request.Cookies["sid"];
@@ -58,7 +58,7 @@ namespace SSO.WCFService.BusinessLogic
                     throw new UnauthorizedAccessException("User has to be admin to perform this action.");
 
 
-                _mngr.AddUserToRole(roleId, userId);
+                _mngr.AddUserToRole(roleName, userId);
                 _ctx.OutgoingResponse.StatusCode = HttpStatusCode.OK;
                 return new ActionResult
                 {
@@ -75,10 +75,10 @@ namespace SSO.WCFService.BusinessLogic
                 var myf = new MyFault { Details = e.Message };
                 throw new WebFaultException<MyFault>(myf, e.StatusCode);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 var myf = new MyFault { Details = "There has been an error while performing AddUserToRole action." };
-                throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
+                 throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);
             }
         }
 
@@ -133,7 +133,7 @@ namespace SSO.WCFService.BusinessLogic
         {
             try
             {
-                int roleId = req.roleId;
+                string roleName = req.roleName;
                 int userId = req.userId;
 
                 var cookie = HttpContext.Current.Request.Cookies["sid"];
@@ -154,7 +154,7 @@ namespace SSO.WCFService.BusinessLogic
                     throw new UnauthorizedAccessException("User has to be admin to perform this action.");
 
 
-                _mngr.RemoveUserFromRole(roleId, userId);
+                _mngr.RemoveUserFromRole(roleName, userId);
                 _ctx.OutgoingResponse.StatusCode = HttpStatusCode.OK;
                 return new ActionResult
                 {
@@ -171,7 +171,7 @@ namespace SSO.WCFService.BusinessLogic
                 var myf = new MyFault { Details = e.Message };
                 throw new WebFaultException<MyFault>(myf, e.StatusCode);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 var myf = new MyFault { Details = "There has been an error while RemoveUserFromRole action." };
                 throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);

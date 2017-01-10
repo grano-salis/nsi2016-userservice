@@ -21,6 +21,8 @@ namespace SSO.WCFService.ServiceInterfaces
 
         [OperationContract]
         [FaultContract(typeof(MyFault))]
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+
         ActionResult RemoveUserFromRole(RemoveUserFromRoleRequest req); //remove role from a user, TODO: change input and output parameters
 
         [OperationContract]

@@ -11,7 +11,8 @@ namespace SSO.WCFService.DataContracts
 
     {
         [DataMember]
-        public int roleId;
+        public string roleName;
+
         [DataMember]
         public int userId;
     }

@@ -19,9 +19,9 @@ namespace SSO.WCFService.BusinessLogic
             _roleProvider = new CustomRoleProvider(_db);
         }
 
-        public void AddUserToRole(int roleId, int userId)
+        public void AddUserToRole(string roleName, int userId)
         {
-            _roleProvider.AddUsersToRoles(new int[1] { userId }, new int[1] { roleId });
+            _roleProvider.AddUsersToRoles(new int[1] { userId }, new string[1] { roleName });
         }
 
         public bool BanUser(string userId, bool ban)
@@ -45,9 +45,9 @@ namespace SSO.WCFService.BusinessLogic
             return new ActionResult { Message = "Password successfully changed." };
         }
 
-        public void RemoveUserFromRole(int roleId, int userId)
+        public void RemoveUserFromRole(string roleName, int userId)
         {
-            _roleProvider.RemoveUsersFromRoles(new int[1] { userId }, new int[1] { roleId });
+            _roleProvider.RemoveUsersFromRoles(new int[1] { userId }, new string[1] { roleName });
         }
 
         public getUsersResponse getUsers(string username)

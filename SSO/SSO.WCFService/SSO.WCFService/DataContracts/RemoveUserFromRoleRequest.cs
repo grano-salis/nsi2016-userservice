@@ -10,7 +10,7 @@ namespace SSO.WCFService.DataContracts
     public class RemoveUserFromRoleRequest
     {
         [DataMember]
-        public int roleId;
+        public string roleName;
         [DataMember]
         public int userId;
     }
