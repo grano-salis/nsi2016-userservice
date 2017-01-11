@@ -259,7 +259,7 @@ namespace SSO.WCFService.BusinessLogic
                 var myf = new MyFault { Details = e.Message };
                 throw new WebFaultException<MyFault>(myf, e.StatusCode);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 var myf = new MyFault { Details = "There has been an error while getRoles action." };
                 throw new WebFaultException<MyFault>(myf, HttpStatusCode.InternalServerError);

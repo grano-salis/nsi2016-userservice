@@ -9,7 +9,7 @@
 
         <div class="f-group">
            <input type="text" class="f-ctrl" id="search"
-             name="search" ng-model="search.string" placeholder="Korisničko ime, ime ili prezime">
+             name="search" ng-model="search.string" placeholder="Korisničko ime...">
         </div>
         
         
@@ -23,10 +23,12 @@
 
       <div class="manage-users-result" ng-if="!showSelectedUser">
           <h3>Pronađeni korisnici</h3>
-          
+          <div class="found-user" ng-show="foundUsers.length == 0">
+              <em>Nema pronađenih korisnika</em>
+          </div>
           <div class="found-user" ng-repeat="user in foundUsers track by $index" ng-click="selectUser(user)">
               <div class="container-fluid">
-                  
+               
               <div class="col-md-6">
                   <div class="username">{{user.Username}}</div>
                 <div class="roles">

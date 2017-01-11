@@ -55,7 +55,7 @@ namespace SSO.WCFService.BusinessLogic
             try
             {
 
-                List<UserInfoVM> userInfos = _db.Users.Where(u => u.Username.Contains(username)).ToList().Select(u => new UserInfoVM
+                List<UserInfoVM> userInfos = _db.Users.Where(u => u.Username.ToLower().Contains(username.ToLower())).ToList().Select(u => new UserInfoVM
                 {
                     UserId = u.ID,
                     Username = u.Username,
