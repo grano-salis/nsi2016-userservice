@@ -66,6 +66,15 @@
             data:model
         });
     };
+    
+    this.changePassword = function(model){
+          return $http({
+              url: serverName + '/BusinessLogic/AccountManagement.svc/json/changepassword',
+              method:"POST",
+              withCredentials:true,
+              data:model
+          });
+      };
   }
 
 })();

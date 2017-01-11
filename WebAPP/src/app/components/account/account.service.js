@@ -81,6 +81,14 @@ function accountService($http, serverName, $q){
           });
       };
       
+      this.changePassword = function(model){
+          return $http({
+              url: serverName + '/BusinessLogic/Account.svc/json/changepassword',
+              method:"POST",
+              withCredentials:true,
+              data:model
+          });
+      }
       /*
       this.register = function (registerModel) {
           var deferred = $q.defer();

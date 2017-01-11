@@ -64,7 +64,7 @@ namespace SSO.WCFService.BusinessLogic
                 _ctx.OutgoingResponse.StatusCode = e.StatusCode;
                 return new ActionResult { Message = e.Message };
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 _ctx.OutgoingResponse.StatusCode = HttpStatusCode.InternalServerError;
                 return new ActionResult { Message = "An error has occured while executing the change password action." };

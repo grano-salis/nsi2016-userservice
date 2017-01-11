@@ -18,6 +18,12 @@
       $scope.foundUsers = [];
       $scope.roles = []; 
       
+      $scope.model = {
+            ID: 0,
+            OldPassword: "",
+            NewPassword: "",
+            RPassword: ""
+      };
       // Dohvatanje ruta
       (function fetchRoles(){
         adminService.getRoles().then(function(resp){
@@ -44,7 +50,8 @@
       
       $scope.selectUser = function(user){
           angular.copy(user, $scope.selectedUser);
-          $scope.showSelectedUser = true;
+          $scope.showSelectedUser = true;        
+          
       }
       
       $scope.hasRole = function(role){
@@ -87,6 +94,24 @@
           }
             
       }
+      
+      $scope.changePass = function(){
+        if($scope.model.RPassword !==  $scope.model.NewPassword){
+            toastr.error("Lozinke su razlicite.");
+            return;
+        }
+        $scope.model.ID = $scope.selectedUser.UserId
+        adminService.changePassword($scope.model).then(function(resp){
+            toastr.success("Uspješno promijenjena lozinka");
+        })
+        .catch(function(resp){
+            if(resp.data && resp.data.Message == "Wrong login credentials."){
+                toastr.error("Pogrešna trenuta lozinka.");
+            } else {
+                toastr.error("Greška pri promjeni lozinke.");
+            }           
+        });
+    }
   }
 
 })();

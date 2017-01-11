@@ -107,6 +107,7 @@ namespace SSO.WCFService.Helpers
 
                 }
             }
+            _db.SaveChanges();
 
         }
 
@@ -221,6 +222,7 @@ namespace SSO.WCFService.Helpers
 
             List<ManageRole> mrs = _db.ManageRoles.Include("Role").Where(mr => userIds.Contains(mr.UserID) && roleNames.Contains(mr.Role.Name)).ToList();
             _db.ManageRoles.RemoveRange(mrs);
+            _db.SaveChanges();
         }
 
         public override bool RoleExists(string roleName)

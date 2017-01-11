@@ -22,6 +22,11 @@
         url:'/me',
         templateUrl: 'app/components/account/profile/profile.tmpl.html',
         controller: 'ProfileCtrl'
+      })
+      .state('change_password',{
+        url:'/change-password',
+        templateUrl: 'app/components/account/change_password/change_password.tmpl.html',
+        controller: 'ChangePasswordCtrl'
       });
 
       $httpProvider.interceptors.push('authInterceptor');

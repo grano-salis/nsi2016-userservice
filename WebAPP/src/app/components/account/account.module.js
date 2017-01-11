@@ -3,6 +3,6 @@
   'use strict';
 
   angular
-    .module('ea.account', ['LocalStorageModule', 'ui.bootstrap', 'ngAnimate']);
+    .module('ea.account', ['LocalStorageModule', 'ui.bootstrap', 'ngAnimate', 'toastr']);
 
 })();

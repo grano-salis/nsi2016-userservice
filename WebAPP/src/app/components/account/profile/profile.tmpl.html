@@ -7,6 +7,9 @@
         <div class="f-group">
           <label translate="REG.USERNAME">Username</label>
           <p class="f-hb">{{user.username}}</p>
+          <div>
+              <span class="badge" ng-repeat="role in user.roles">{{role}}</span>
+          </div>
         </div>
 
         <div class="f-group">
@@ -17,6 +20,9 @@
         <div class="f-group" ng-hide="hideLogout">
           <button class="f-btn f-btn-fill pull-right" ng-click="logout()"
             translate="REG.LOGOUT">Log out</button>
+            
+          <a ui-sref="change_password" class="f-btn pull-right">Promijeni lozinku</a>
+
         </div>
       </div>
 

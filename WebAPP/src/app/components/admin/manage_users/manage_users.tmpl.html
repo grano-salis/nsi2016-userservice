@@ -49,8 +49,10 @@
           <h3>Uredi korisnika</h3>
           <h3>{{selectedUser.Username}} <span class="badge" ng-repeat="role in selectedUser.Roles">{{role}}</span></h4>
           
+            
           <div class="manage-roles">
-              <table class="table">
+             
+              <table class="table" ng-show="!showChangePass">
                   <thead>
                     <tr>
                         <th class="col-md-6">Privilegija</th>
@@ -69,11 +71,57 @@
                     </tr>
                 </tbody>
               </table>
+              
           </div>
       
+          
       </div>   
+   
+      <form name="rForm" class="form-sue form-sue-g" ng-submit="changePass()" novalidate  ng-if="showSelectedUser">
+        <div class="f-group">
+          <h1>Promjena lozinke</h1>
+        </div>
+
+        <div class="f-group f-has-error">
+          <div class="f-hb" ng-repeat="err in errors">
+            {{err}}
+          </div>
+        </div>
+
+        <div class="f-group" ng-class="{'f-has-error':rForm.password.$invalid && rForm.password.$touched}">
+          <label for="rPassword">Nova lozinka</label>
+          <input type="password" class="f-ctrl" id="rPassword"
+            name="password" ng-model="model.NewPassword" placeholder="Nova lozinka"
+            required ng-minlength="8">
+          <p class="f-hb" ng-if="rForm.password.$invalid && rForm.password.$touched">
+            <span ng-if="rForm.password.$error.required" translate="REG.REQUIRED">Required.</span>
+            <span ng-if="rForm.password.$error.minlength" translate="REG.PASS_SHORT">
+              Password need to have at least 8 chars.
+            </span>
+          </p>
+        </div>
+
+        <div class="f-group" ng-class="{'f-has-error':rForm.confirmPassword.$invalid && rForm.confirmPassword.$touched}">
+          <label for="rConfirmPassword">Ponovite novu lozinku</label>
+          <input type="password" class="f-ctrl" id="rConfirmPassword"
+            name="confirmPassword" placeholder="Ponovite novu lozinku"
+            required ng-model="model.RPassword" confirm-password="model.NewPassword">
+          <p class="f-hb" ng-if="rForm.confirmPassword.$invalid && rForm.confirmPassword.$touched">
+            <span ng-if="rForm.confirmPassword.$error.required" translate="REG.REQUIRED">Required.</span>
+            <span ng-if="rForm.confirmPassword.$error.confirm" translate="REG.PASS_NOT_SAME">Passwords are not same.</span>
+          </p>
+        </div>
+
+        <div class="f-group">
+          <button type="submit" class="f-btn pull-right" name="button"><!--
+          --><span>Promijeni lozinku</span><!--
+        --></button>
+
+        </div>
+
+      </form>
    
    </div>
     
-    
+    <!-- END of .right-panel -->
 </div>
