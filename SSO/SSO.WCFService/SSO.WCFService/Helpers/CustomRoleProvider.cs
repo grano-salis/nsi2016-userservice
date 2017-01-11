@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SSO.WCFService.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -49,48 +50,62 @@ namespace SSO.WCFService.Helpers
 
             for (int i = 0; i < roleNames.Length; i++)
             {
-                var role = _db.Roles.SingleOrDefault(r => r.Name.Equals(roleNames[i]));
+                var name = roleNames[i];
+                var role = _db.Roles.SingleOrDefault(r => r.Name.Equals(name));
                 if (role == null)
-                    throw new Exception("Role with specified name does not exist.");
+                    throw new RoleNotFound(roleNames[i]);
                 roleIds.Add(role.ID);
             }
 
             for (int i = 0; i < usernames.Length; i++)
             {
-                var user = _db.Users.SingleOrDefault(u => u.Username.Equals(usernames[i]));
+                var name = usernames[i];
+                var user = _db.Users.SingleOrDefault(u => u.Username.Equals(name));
                 if (user == null)
-                    throw new Exception("User with specified username does not exist.");
+                    throw new UserNotFound(usernames[i]);
                 userIds.Add(user.ID);
             }
 
             for (int i = 0; i < userIds.Count; i++)
             {
                 for (int j = 0; j < roleIds.Count; j++)
-                    _db.ManageRoles.Add(new ManageRole { RoleID = roleIds[j], UserID = userIds[i] });
+                {
+
+                    int id = userIds[i];
+                    int roleID = roleIds[j];
+                    _db.ManageRoles.Add(new ManageRole { RoleID = roleID, UserID = id });
+                }
             }
         }
 
-        public void AddUsersToRoles (int[] userIds, int[] roleIds)
+        public void AddUsersToRoles (int[] userIds, string[] roleNames)
         {
-            for (int i = 0; i < roleIds.Length; i++)
+            for (int i = 0; i < roleNames.Length; i++)
             {
-                var role = _db.Roles.SingleOrDefault(r => r.ID.Equals(roleIds[i]));
+                var name = roleNames[i];
+                var role = _db.Roles.SingleOrDefault(r => r.Name == name);
                 if (role == null)
-                    throw new Exception("Role with specified id does not exist.");
+                    throw new RoleNotFound(roleNames[i]);
 
             }
 
             for (int i = 0; i < userIds.Length; i++)
             {
-                var user = _db.Users.SingleOrDefault(u => u.ID.Equals(userIds[i]));
+                var id = userIds[i];
+                var user = _db.Users.SingleOrDefault(u => u.ID == id);
                 if (user == null)
-                    throw new Exception("User with specified id does not exist.");
+                    throw new UserNotFound(userIds[i]);
             }
 
             for (int i = 0; i < userIds.Length; i++)
             {
-                for (int j = 0; j < roleIds.Length; j++)
-                    _db.ManageRoles.Add(new ManageRole { RoleID = roleIds[j], UserID = userIds[i] });
+                for (int j = 0; j < roleNames.Length; j++)
+                {
+                    var name = roleNames[i];
+                    var id = userIds[i];
+                    _db.ManageRoles.Add(new ManageRole { RoleID = _db.Roles.SingleOrDefault(r => r.Name == name).ID, UserID =  id});
+
+                }
             }
 
         }
@@ -108,7 +123,7 @@ namespace SSO.WCFService.Helpers
             Roles r = _db.Roles.SingleOrDefault(role => role.Name.Equals(roleName));
 
             if (r == null)
-                throw new Exception("Role with that name doesn't exist.");
+                throw new RoleNotFound(roleName);
              
             if (throwOnPopulatedRole)
             {
@@ -116,7 +131,7 @@ namespace SSO.WCFService.Helpers
                 if (exists)
                     throw new Exception("There are users assigned to this role.");
             }
-            List<ManageRole> mngroles = _db.ManageRoles.Where(m => m.RoleID.Equals(r.ID)).ToList();
+            List<ManageRole> mngroles = _db.ManageRoles.Where(m => m.RoleID == r.ID).ToList();
             _db.ManageRoles.RemoveRange(mngroles);
             _db.Roles.Remove(r);
             _db.SaveChanges();
@@ -130,7 +145,7 @@ namespace SSO.WCFService.Helpers
             if (r == null)
                 throw new Exception("Role with that name doesn't exist.");
 
-            return _db.ManageRoles.Include("User").Where(m => m.RoleID.Equals(r.ID) && m.User.Username.Contains(usernameToMatch)).Select(m => m.User.Username).ToArray();
+            return _db.ManageRoles.Include("User").Where(m => m.RoleID == r.ID && m.User.Username.Contains(usernameToMatch)).Select(m => m.User.Username).ToArray();
         }
 
         public List<User> FindUsersInRole(string roleName)
@@ -138,9 +153,9 @@ namespace SSO.WCFService.Helpers
             Roles r = _db.Roles.SingleOrDefault(role => role.Name.Equals(roleName));
 
             if (r == null)
-                throw new Exception("Role with that name doesn't exist.");
+                throw new RoleNotFound(roleName);
 
-            return _db.ManageRoles.Include("User").Where(m => m.RoleID.Equals(r.ID)).Select(m => m.User).ToList();
+            return _db.ManageRoles.Include("User").Where(m => m.RoleID == r.ID).Select(m => m.User).ToList();
         }
 
         public override string[] GetAllRoles()
@@ -153,7 +168,7 @@ namespace SSO.WCFService.Helpers
         {
             var user = _db.Users.SingleOrDefault(u => u.Username.Equals(username));
             if (user == null)
-                throw new Exception("User with specified username does not exist.");
+                throw new UserNotFound(username);
             return _db.ManageRoles.Include("Role").Where(mr => mr.UserID == user.ID).Select(mr => mr.Role.Name).ToArray();
         }
 
@@ -170,11 +185,11 @@ namespace SSO.WCFService.Helpers
         {
             var user = _db.Users.SingleOrDefault(u => u.Username.Equals(username));
             if (user == null)
-                throw new Exception("User with specified username does not exist.");
+                throw new UserNotFound(username);
 
             var role = _db.Roles.SingleOrDefault(r => r.Name.Equals(roleName));
             if (role == null)
-                throw new Exception("Role with specified name does not exist.");
+                throw new RoleNotFound(roleName);
 
             return _db.ManageRoles.Any(mr => mr.RoleID == role.ID && mr.UserID == user.ID);
         }
@@ -182,6 +197,29 @@ namespace SSO.WCFService.Helpers
         public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
         {
             List<ManageRole> mrs = _db.ManageRoles.Include("User").Include("Role").Where(mr => usernames.Contains(mr.User.Username) && roleNames.Contains(mr.Role.Name)).ToList();
+            _db.ManageRoles.RemoveRange(mrs);
+        }
+
+        public void RemoveUsersFromRoles(int[] userIds, string[] roleNames)
+        {
+            for (int i = 0; i < roleNames.Length; i++)
+            {
+                var name = roleNames[i];
+                var role = _db.Roles.SingleOrDefault(r => r.Name == name);
+                if (role == null)
+                    throw new RoleNotFound(roleNames[i]);
+
+            }
+
+            for (int i = 0; i < userIds.Length; i++)
+            {
+                var id = userIds[i];
+                var user = _db.Users.SingleOrDefault(u => u.ID == id);
+                if (user == null)
+                    throw new UserNotFound(userIds[i]);
+            }
+
+            List<ManageRole> mrs = _db.ManageRoles.Include("Role").Where(mr => userIds.Contains(mr.UserID) && roleNames.Contains(mr.Role.Name)).ToList();
             _db.ManageRoles.RemoveRange(mrs);
         }
 

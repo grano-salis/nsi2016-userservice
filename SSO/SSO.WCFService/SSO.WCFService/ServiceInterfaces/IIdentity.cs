@@ -17,6 +17,7 @@ namespace SSO.WCFService.ServiceInterfaces
 
         [OperationContract] //used with parameter only when used by admin to get info about user with userId 
         [FaultContract(typeof(MyFault))]
+        //@TODO:Malik: complete the method to perform auth checks before returning then publish
         AuthResponse Auth(string token); //Get user claims if user has provided a valid token, TODO: change input and output parameters
     }
 }
