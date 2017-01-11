@@ -22,6 +22,11 @@
         url: '/register',
         templateUrl:     'app/components/admin/register/register.tmpl.html',
         controller: 'RegisterCtrl'
+      })
+      .state('admin.manage-users', {
+        url: '/manage-users',
+        templateUrl: 'app/components/admin/manage_users/manage_users.tmpl.html',
+        controller: 'AdminManageUsersCtrl'
       });
   }
 

@@ -1,0 +1,77 @@
+<div class="container">
+    <div class="register-panel col-md-6 col-md-offset-3">
+       
+       
+      <form name="sForm" class="form-sue form-sue-g" ng-submit="searchUsers()" novalidate>
+        <div class="f-group">
+          <h1>Pronađi korisnika</h1>
+        </div>
+
+        <div class="f-group">
+           <input type="text" class="f-ctrl" id="search"
+             name="search" ng-model="search.string" placeholder="Korisničko ime, ime ili prezime">
+        </div>
+        
+        
+        <div class="f-group">
+        <button type="submit" class="f-btn f-btn-fill pull-right" name="button"><!--
+        --><span>Traži</span> <img class="spinner" src="/assets/spinners/ring.svg" alt="waiting..." ng-show="showSpin"><!--
+        --></button>
+
+        </div>
+      </form>
+
+      <div class="manage-users-result" ng-if="!showSelectedUser">
+          <h3>Pronađeni korisnici</h3>
+          
+          <div class="found-user" ng-repeat="user in foundUsers track by $index" ng-click="selectUser(user)">
+              <div class="container-fluid">
+                  
+              <div class="col-md-6">
+                  <div class="username">{{user.Username}}</div>
+                <div class="roles">
+                    <div class="badge" ng-repeat="role in user.Roles">{{role}}</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="fullname">{{user.FirstName}} {{user.LastName}}</div>
+                  <div class="email">{{user.Email}}</div>                  
+              </div>
+              
+                  
+              </div>
+          </div>
+      </div>
+    
+      <div class="selected-user" ng-if="showSelectedUser">
+          <h3>Uredi korisnika</h3>
+          <h3>{{selectedUser.Username}} <span class="badge" ng-repeat="role in selectedUser.Roles">{{role}}</span></h4>
+          
+          <div class="manage-roles">
+              <table class="table">
+                  <thead>
+                    <tr>
+                        <th class="col-md-6">Privilegija</th>
+                        <th class="col-md-6"></th> 
+                    </tr>
+                  </thead>
+                <tbody>
+                    <tr ng-repeat="role in roles">
+                        <th class="col-md-6">{{role}}</th>
+                        <th class="col-md-6">
+                            <button class="btn btn-danger pull-right" ng-click="removeRole(role)"
+                                ng-class="{'disabled':hasRole(role) < 0}">Ukloni</button>
+                            <button class="btn btn-success pull-right" ng-click="addRole(role)"
+                                ng-class="{'disabled':hasRole(role) >= 0}">Dodaj</button>
+                        </th>
+                    </tr>
+                </tbody>
+              </table>
+          </div>
+      
+      </div>   
+   
+   </div>
+    
+    
+</div>

@@ -6,8 +6,10 @@
     .controller('AdminCtrl', ctrl);
 
   /** @ngInject */
-  function ctrl() {
-   
+  function ctrl($state, accountService) {
+    if(!accountService.isAdmin()){
+        $state.go('home');
+    }
   }
 
 })();
