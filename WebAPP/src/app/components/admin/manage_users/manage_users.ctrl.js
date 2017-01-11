@@ -103,6 +103,8 @@
         $scope.model.ID = $scope.selectedUser.UserId
         adminService.changePassword($scope.model).then(function(resp){
             toastr.success("Uspješno promijenjena lozinka");
+            $scope.model.RPassword = "";
+            $scope.model.NewPassword = "";
         })
         .catch(function(resp){
             if(resp.data && resp.data.Message == "Wrong login credentials."){
